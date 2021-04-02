@@ -1,19 +1,20 @@
 <?php $attributes = $this->getProductAttribute()->getData();?>
 <?php $options = $this->getAttributeOptions(); ?>
 <?php $id = $this->getRequest()->getGet('productId'); ?>
+<?php $product = $this->getTableRow();?>
+
 <div class="container">
-<h4>Product Attribute:</h4>
+<h4 class="text-muted text-weight-bold">Product Attribute:</h4>
 
 <?php foreach ($attributes as $attribute): ?>
 <div class="form-group">
 		<label><?php echo $attribute->name;?></label>
 		<?php if ($attribute->inputType == "select"): ?>
-			<select name="productAttribute[<?= $attribute->code; ?>]" class="form-control">
+			<select name="product[<?= $attribute->code; ?>]" class="form-control">
 				<?php foreach ($options->getData() as $option): ?>
 					<?php if($option->attributeId == $attribute->attributeId):?>
-					<option value="<?= $option->optionId; ?>">
-						<?= $option->name; ?>
-					</option>
+					<option value="<?= $option->optionId; ?>" <?php $code = $attribute->code; if($option->optionId == $product->$code): ?> selected <?php endif; ?>><?= $option->name; ?></option>
+					
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</select>
@@ -22,7 +23,7 @@
 	<?php elseif($attribute->inputType == "radio"): ?>
 		<?php foreach ($options->getData() as $option): ?>
 				<?php if($option->attributeId == $attribute->attributeId):?>
-					<input type="radio" name="productAttribute[<?= $attribute->code; ?>]" value="<?= $option->name; ?>" class="form-control">
+					<input type="radio" class="form-control" id="<?= $attribute->code ?>" name="product[<?= $attribute->code ?>]" value="<?php $code = $attribute->code; echo $product->$code; ?>">
 				<?php endif; ?>
 		<?php endforeach; ?>
 	</div>
@@ -30,7 +31,7 @@
 	<?php elseif ($attribute->inputType == "checkbox") :?>
 		<?php foreach ($options->getData() as $option): ?>
 				<?php if($option->attributeId == $attribute->attributeId):?>
-					<td><input type="checkbox" name="productAttribute[<?= $attribute->code; ?>]" value="<?= $option->name; ?>" class="form-control"></td>
+					<td><input type="checkbox" class="form-control" id="<?= $attribute->code ?>" name="product[<?= $attribute->code ?>]" value="<?php $code = $attribute->code; echo $product->$code; ?>"></td>
 				<?php endif; ?>
 		<?php endforeach; ?>
 	</div>
@@ -38,7 +39,7 @@
 	<?php elseif ($attribute->inputType == "text") :?>
 		<?php foreach ($options->getData() as $option): ?>
 				<?php if($option->attributeId == $attribute->attributeId):?>
-					<td><input type="text" name="productAttribute[<?= $attribute->code; ?>]" value="<?= $option->name; ?>" class="form-control"></td>
+					<td><input type="text" class="form-control" id="<?= $attribute->code ?>" name="product[<?= $attribute->code ?>]" value="<?php $code = $attribute->code; echo $product->$code; ?>"></td>
 				<?php endif; ?>
 		<?php endforeach; ?>
 	</div>
@@ -46,7 +47,7 @@
 		<?php elseif ($attribute->inputType == "textarea") :?>
 		<?php foreach ($options->getData() as $option): ?>
 				<?php if($option->attributeId == $attribute->attributeId):?>
-					<td><textarea name="productAttribute[<?= $attribute->code; ?>]"><?php echo $option->name; ?></textarea class="form-control"></td>
+					<td><textarea class="form-control" id="<?= $attribute->code ?>" name="product[<?= $attribute->code ?>]"><?php $code = $attribute->code; echo $product->$code; ?></textarea></td>
 				<?php endif; ?>
 		<?php endforeach; ?>
 	</div>

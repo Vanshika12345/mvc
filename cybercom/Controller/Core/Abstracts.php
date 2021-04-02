@@ -32,11 +32,15 @@ class Abstracts
 		return $this->message;
 	}
 
+	public function redirect($actionName = null,$controllerName=null,$params=[],$resetParam = false)
+	{
+		return header('Location: '.$this->getUrl($actionName,$controllerName,$params,$resetParam));
+	}
 
-	public function getUrl($actionName = null,$controllerName=null,$params=[],$resetParams = false) {
+	public function getUrl($actionName = null,$controllerName=null,$params=[],$resetParam = false) {
 
 		$urls = $this->getRequest()->getGet();
-		if ($resetParams) {
+		if ($resetParam) {
 			$urls = [];
 		}
 		if ($actionName == NULL) {

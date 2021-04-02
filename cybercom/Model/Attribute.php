@@ -67,40 +67,15 @@ class Attribute extends \Model\Core\Table{
 			return false;
 		}
 
-		$attributeOption = \Mage::getModel('Model\Attribute\Option');
-		$query = "SELECT * FROM `{$attributeOption->getTableName()}` WHERE `attributeId` = '{$this->attributeId}' ORDER BY `sortOrder` ASC";
-		$options = $attributeOption->fetchAll($query);
-
-		return $options;
-
-	}
-
-	public function setEntityAttributes()
-	{
-			$tableName = $this->entityTypeId;
-			$columnName = $this->name;
-			$type = $this->backendType;
-			
-			if($type == "VARCHAR"){
-				$query = "ALTER TABLE `{$tableName}` ADD COLUMN `{$columnName}` {$type}(20)";	
-			} else{
-				$query = "ALTER TABLE `{$tableName}` ADD COLUMN `{$columnName}` {$type}";
-			}
-			$attributeModel = \Mage::getModel('Model\Attribute');
-			$result = $attributeModel->alterTable($query);
-	}
 		
-	public function deleteEntity()
-	{
-		if ($this->attributeId) {
-			$tableName = $this->entityTypeId;
-			$query = "ALTER TABLE `{$tableName}` DROP COLUMN `{$this->name}`";
-			$attributeModel = \Mage::getModel('Model\Attribute');
-			$result = $attributeModel->alterTable($query);
-			
-		}
+		return \Mage::getModel($this->backendModel)
+		->setAttribute($this)
+		->getOptions();
+		
+	
 	}
 
+	
 
 }
 

@@ -7,7 +7,8 @@ class Table {
 	protected $adapter =null;
 	protected $primaryKey = null;
 	protected $tableName = null;
-	public $data = [];
+	protected $originalData = [];
+	protected $data = [];
 	
 	public function setPrimaryKey($primaryKey) {
 		$this->primaryKey = $primaryKey;
@@ -44,6 +45,21 @@ class Table {
 		return $this->tableName;
 	}
 
+	public function setOriginalData($originalData)
+	{
+		$this->originalData = $originalData;
+		return $this;
+	}
+
+	public function getOriginalData()
+	{
+		return $this->originalData;
+	}
+
+	public function resetData()
+	{
+		$this->data = [];
+	}
 	public function setData(array $data) {
 		$this->data = array_merge($this->data,$data);
 		return $this;
@@ -59,26 +75,43 @@ class Table {
 	}
 
 	public function __get($name) {
-		if (!array_key_exists($name, $this->data)) {
-			return null;
+		if (array_key_exists($name, $this->data)) {
+			return $this->data[$name];
 		}
-		return $this->data[$name];
+
+		if (array_key_exists($name, $this->originalData)) {
+			return $this->originalData[$name];
+		}
+		return null;
+		
 	}
 
 
 	public function save(){
 		
-		if (array_key_exists($this->getPrimaryKey(), $this->getData())) {
+		$id = (int)$this->{$this->getPrimaryKey()};
+		if (array_key_exists($this->getPrimaryKey(), $this->data)) {
+			unset($this->data[$this->getPrimaryKey()]);
+		}
+		
 
+		
+		if(!$this->getData()){
+			return false;
+		}
+
+		//if (array_key_exists($this->getPrimaryKey(), $this->getData())) {
+		
+		if($id){
+			
 			$tableData = [];
 			foreach ($this->getData() as $key => $value) {
 				$tableData[] = "`".$key."` = '".$value."'";
 			}
-			$id = $this->getData()[$this->getPrimaryKey()];
+		
 			$keys = implode(", ", $tableData);
 			$query = "UPDATE `{$this->getTableName()}` SET {$keys} WHERE `{$this->getPrimaryKey()}` = '{$id}'";
 			return $this->getAdapter()->update($query);
-
 		
 		}
 		else {
@@ -89,9 +122,8 @@ class Table {
 			}
 			$values = implode(", ", $values);
 			$query = "INSERT INTO `{$this->getTableName()}` ({$keys}) VALUES ({$values})";
-
 			$id = $this->getAdapter()->insert($query);
-		
+			
 		 }
 		 $this->load($id);
 		 return $this;
@@ -100,15 +132,20 @@ class Table {
 
 	public function delete(){
 
-		$query = "DELETE FROM `{$this->getTableName()}` WHERE `{$this->getPrimaryKey()}` = '{$this->data[$this->getPrimaryKey()]}'";
-		$result = $this->getAdapter()->delete($query);
-		return $result;
+		$query = "DELETE FROM `{$this->getTableName()}` WHERE `{$this->getPrimaryKey()}` = '{$this->{$this->getPrimaryKey()}}'";
+		return $this->getAdapter()->delete($query);
 		
 	}
-	public function load($id){
-		$id = (int)$id;
-			$query = "SELECT * FROM `{$this->getTableName()}` WHERE `{$this->getPrimaryKey()}` = '{$id}'";
-			return $this->fetchRow($query);
+	public function load($value,$key=null){
+		
+		if(!$key){
+			$value = (int)$value;
+			$query = "SELECT * FROM `{$this->getTableName()}` WHERE `{$this->getPrimaryKey()}` = '{$value}'";
+		} else {
+			$query = "SELECT * FROM `{$this->getTableName()}` WHERE `{$key}` = '{$value}'";
+		}
+
+		return $this->fetchRow($query);
 			
 	}
 	
@@ -118,28 +155,33 @@ class Table {
 			if (!$row) {
 				return false;
 			}
-		$this->data = $row;
+		//$this->setData($row);
+		$this->setOriginalData($row);
+		//$this->resetData();
 		return $this;
 	}
 
 	public function fetchAll($fetchAllquery = null) {
 
+		$collectionClassName = get_class($this)."\Collection";
+		$collection = \Mage::getModel($collectionClassName);
+
 		if (!$fetchAllquery) {
-		$fetchAllquery = "SELECT * FROM `{$this->getTableName()}`";
+			$fetchAllquery = "SELECT * FROM `{$this->getTableName()}`";
 		}
+		
 		$rows = $this->getAdapter()->fetchAll($fetchAllquery);
 		if (!$rows) {
-			return false;
+			return $collection;
 		}
 		foreach($rows as $key => $row) {
 			$keys = new $this;
-			$keys->setData($row);
+			//setOriginal
+			$keys->setOriginalData($row);
+			//$keys->setData($row);
 			$rowArray[] = $keys;
 		}
-		$this->setData($rowArray);
-
-		$collectionClassName = get_class($this)."\Collection";
-		$collection = \Mage::getModel($collectionClassName);
+		
 		$collection->setData($rowArray); 
 		return $collection;
 		

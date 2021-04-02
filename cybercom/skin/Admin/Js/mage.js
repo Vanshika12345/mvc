@@ -77,6 +77,13 @@ Base.prototype = {
 		}); 
 	},
 
+	setForm : function(form) {
+		this.setMethod($(form).attr('method'));
+		this.setUrl($(form).attr('action'));
+		this.setParams($(form).serializeArray());
+		return this;
+	},
+
 	upload : function () {
 		 $.ajax({
 			method : this.getMethod(),

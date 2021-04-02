@@ -82,7 +82,7 @@ class Customer extends \Controller\Core\Admin{
 			
 			try{
 				if (!$this->getRequest()->isPost()) {
-					throw new Exception("Invalid Request");
+					throw new \Exception("Invalid Request");
 					
 				}
 
@@ -176,7 +176,7 @@ class Customer extends \Controller\Core\Admin{
 				echo json_encode($response);
 
 			
-		} catch (Exception $e){
+		} catch (\Exception $e){
 			echo $e->getMessage();
 		}
 	}
@@ -213,7 +213,7 @@ class Customer extends \Controller\Core\Admin{
 			header("Content-type: application/json");
 			echo json_encode($response);
 			
-		} catch(Exception $e) 
+		} catch(\Exception $e) 
 		{ 
 			echo $e->getMessage();
 		}
@@ -230,7 +230,7 @@ class Customer extends \Controller\Core\Admin{
 				$customer = $customer->load($id);
 
 				if (!$customer) {
-					throw new Exception("No records found");
+					throw new \Exception("No records found");
 					
 				}
 				
@@ -249,11 +249,39 @@ class Customer extends \Controller\Core\Admin{
 			header("Content-type: application/json");
 			echo json_encode($response);
 			
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			echo $e->getMessage();
 			}
 	
 	}
+
+	public function filterAction()
+		{
+			$filters = $this->getRequest()->getPost('filter');
+			
+			$filterModel = \Mage::getModel('Model\Admin\Filter');
+			$filterModel->setFilter($filters);
+			
+			$gridHtml = \Mage::getBlock('Block\Admin\Customer\Grid')->toHtml();
+				$response = [
+					'status' => 'success',
+					'message' => 'you did it',
+					'element' => [
+						[
+							'selector' => '#moduleGrid',
+							'html' => $gridHtml
+						]
+					]
+			];
+
+			header("Content-type: application/json; charset=utf-8");
+			echo json_encode($response);
+	}
+	
+	public function clearFilterAction()
+	{
+		
+	}	    
 			
 }
 

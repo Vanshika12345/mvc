@@ -1,5 +1,6 @@
 <?php $pages = $this->getTableRow();?>
 
+<div class="container">
 <div class="form-group">
 	<label>Title</label>
 	<input type="text" name="page[title]" class="form-control" value="<?php echo $pages->title?>">
@@ -27,4 +28,5 @@
 <div class="form-group">
 	<button type="button" class="btn btn-success" onclick="object.setUrl('<?= $this->getUrl()->getUrl('save','admin_cms')?>').resetParam().setParams($('#editForm').serializeArray()).load()">Save</button>
 	<button type="button" class="btn btn-danger">Close</button>
+</div>
 </div>

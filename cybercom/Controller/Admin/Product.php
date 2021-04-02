@@ -59,12 +59,11 @@ class Product extends \Controller\Core\Admin{
 		date_default_timezone_set('Asia/Kolkata');
 		try{
 			if (!$this->getRequest()->isPost()) {
-				throw new Exception("Invalid Request");
+				throw new \Exception("Invalid Request");
 				
 			}
 			
-			if(!$this->getRequest()->getGet('tab')){
-				$product = $this->getProductModel();
+			$product = $this->getProductModel();
 				if ($id = $this->getRequest()->getGet('productId')) {
 						$product = $product->load($id);
 
@@ -78,23 +77,14 @@ class Product extends \Controller\Core\Admin{
 						$this->getMessage()->setSuccess('Record Inserted Successfully');
 					}
 					$postData = $this->getRequest()->getPost('product');
+					foreach ($postData as &$productDetails) {
+						if (is_array($productDetails)) {
+							$productDetails = implode(',', $productDetails);
+						}
+						
+					}
 					$product->setData($postData);
 					$product->save();
-			} else {
-
-				$product = $this->getProductModel();
-				if ($id = $this->getRequest()->getGet('productId')) {
-					$product = $product->load($id);
-
-						if (!$product) {
-							$this->getMessage()->setFailure("No Records Found");	
-						}
-				}
-
-				$postData = $this->getRequest()->getPost('productAttribute');
-				$product->setData($postData);
-				$product->save();
-			}
 			
 			$grid = \Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
 			$response = [
@@ -112,7 +102,7 @@ class Product extends \Controller\Core\Admin{
 			
 		
 		
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 
 			echo $e->getMessage();
 		}
@@ -146,7 +136,7 @@ class Product extends \Controller\Core\Admin{
 				];
 				header("Content-type: application/json");
 				echo json_encode($response);
-		}catch(Exception $e) { 
+		}catch(\Exception $e) { 
 			echo $e->getMessage();
 		}
 		
@@ -160,7 +150,7 @@ class Product extends \Controller\Core\Admin{
 				$product = $product->load($id);
 
 				if (!$product) {
-					throw new Exception("No Data Found");
+					throw new \Exception("No Data Found");
 				}
 				
 				
@@ -181,6 +171,68 @@ class Product extends \Controller\Core\Admin{
 		echo json_encode($response);
 		
 		}	
+
+
+		public function productCategoryAction()
+		{
+			if($productId = $this->getRequest()->getGet('productId'))
+			{
+				
+				$postData = $this->getRequest()->getPost('productCategory');
+				
+				foreach ($postData as $id) {
+					$productCategoryModel = \Mage::getModel('Model\Product\Category');
+					$productCategoryModel->categoryId = $id;
+					$productCategoryModel->productId = $productId;
+					$productCategoryModel->save();	
+				}	
+			}
+
+			$grid = \Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
+				$response = [
+					'status' => 'success',
+					'message' => 'product grid',
+					'element' => [
+						[
+							'selector' => '#moduleGrid',
+							'html' => $grid
+						]
+					]
+				];
+				header("Content-type: application/json");
+				echo json_encode($response);
+
+			
+		}
+
+
+		public function filterAction()
+		{
+			$filters = $this->getRequest()->getPost('filter');
+			
+			$filterModel = \Mage::getModel('Model\Admin\Filter');
+			$filterModel->setFilter($filters);
+			
+			$gridHtml = \Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
+				$response = [
+					'status' => 'success',
+					'message' => 'you did it',
+					'element' => [
+						[
+							'selector' => '#moduleGrid',
+							'html' => $gridHtml
+						]
+					]
+			];
+
+			header("Content-type: application/json; charset=utf-8");
+			echo json_encode($response);
+	}
+	
+	public function clearFilterAction()
+	{
+		
+	}	    
 }
 
 

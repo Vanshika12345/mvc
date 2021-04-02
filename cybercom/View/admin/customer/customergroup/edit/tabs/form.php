@@ -2,7 +2,8 @@
 $customerGroup = $this->getTableRow();
 $id = $this->getRequest()->getGet('groupId');
 ?>
-<br>
+
+<div class="container">
 <div class="form-group">
     <label>Group Name</label>
     <input type="text" name="customerGroup[name]" id="group_name" class="form-control" placeholder="Enter GroupName" value="<?php echo $customerGroup->name;?>">
@@ -22,4 +23,4 @@ $id = $this->getRequest()->getGet('groupId');
 
     <button type="button" class="btn btn-danger" >Close</button>
 </div>
-
+</div>

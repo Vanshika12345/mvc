@@ -37,7 +37,7 @@ class Category extends \Model\Core\Table{
 			if (!$parent) {
 				throw new Exception("Unable to load parent");
 			}
-			$pathId = $parent->path."=".$this->categoryId;
+			$pathId = $parent->path."-".$this->categoryId;
 			
 		}
 		$this->path = $pathId;
@@ -46,7 +46,7 @@ class Category extends \Model\Core\Table{
 
 	public function updateChildrenPathId($categoryPathId,$parentId = null)
 	{
-		$categoryPathId = $categoryPathId.'=';
+		$categoryPathId = $categoryPathId.'-';
 		
 		$query = "SELECT * FROM `category_table` WHERE `path` LIKE '{$categoryPathId}%' ORDER BY `path` ASC";
 		$categories = $this->getAdapter()->fetchAll($query);

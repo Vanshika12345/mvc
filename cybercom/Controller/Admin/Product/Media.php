@@ -7,7 +7,6 @@ class Media extends \Controller\Core\Admin{
 	protected $media = [];
 	protected $mediaModel = null;
 	
-	
 	public function setMediaModel($mediaModel = null) {
 		if (!$mediaModel) {
 			$mediaModel = \Mage::getModel('Model\Product\Media');
@@ -38,7 +37,7 @@ class Media extends \Controller\Core\Admin{
 		date_default_timezone_set('Asia/Kolkata');
 		try{
 			if (!$this->getRequest()->isPost()) {
-				throw new Exception("Invalid Request");
+				throw new \Exception("Invalid Request");
 				
 			}
 			$product = \Mage::getModel('Model\Product');
@@ -47,17 +46,17 @@ class Media extends \Controller\Core\Admin{
 				$media = $media->load($id);
 
 				if (!$media) {
-					$this->getAdminMessage()->setFailure("No Records Found");	
+					$this->getMessage()->setFailure("No Records Found");	
 				}
 			}
 			$imageName = $_FILES['file']['name'];
 			$imagetmpPath = $_FILES['file']['tmp_name'];
-			$path = $_SERVER['DOCUMENT_ROOT'].'/cybercom/Images/';
-			
-			if (move_uploaded_file($imagetmpPath, $path.$imageName)) {
+			$path = $_SERVER['DOCUMENT_ROOT'].'/cybercom/Images/Product/';
+			$randomName = 'product'.rand(1,6).'_'.$imageName;
+			if (move_uploaded_file($imagetmpPath, $path.$randomName)) {
 				$media = \Mage::getModel('Model\Product\Media');
 				$media->productId = $this->getRequest()->getGet('productId');
-				$media->image = $imageName;	
+				$media->image = $randomName;	
 				$media->save();
 			}
 
@@ -65,7 +64,7 @@ class Media extends \Controller\Core\Admin{
 			if ($id) {
 				$product = $product->load($id);
 				if (!$product) {
-					throw new Exception("No records Found");
+					throw new \Exception("No records Found");
 				}
 			}
 			$edit = \Mage::getBlock('Block\Admin\Product\Edit')->setTableRow($product)->toHtml();
@@ -84,7 +83,7 @@ class Media extends \Controller\Core\Admin{
 		header("Content-type: application/json; charset=utf-8");
 		echo json_encode($response);
 		
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 
 			echo $e->getMessage();
 		}	
@@ -95,9 +94,8 @@ class Media extends \Controller\Core\Admin{
 		try{
 			
 			$mediaId = $this->getRequest()->getPost('remove');
-			$path = $_SERVER['DOCUMENT_ROOT'].'/cybercom/Images/';
+			$path = $_SERVER['DOCUMENT_ROOT'].'/cybercom/Images/Product/';
 			$mediaModel = \Mage::getModel('Model\Product\Media');
-			
 			foreach ($mediaId as $id =>$value) {
 				$mediaModel->load($id);
 				unlink($path.$mediaModel->image);
@@ -108,7 +106,7 @@ class Media extends \Controller\Core\Admin{
 			if ($id) {
 				$product = $product->load($id);
 				if (!$product) {
-					throw new Exception("No records Found");
+					throw new \Exception("No records Found");
 				}
 			}
 			$edit = \Mage::getBlock('Block\Admin\Product\Edit')->setTableRow($product)->toHtml();
@@ -127,7 +125,7 @@ class Media extends \Controller\Core\Admin{
 		header("Content-type: application/json; charset=utf-8");
 		echo json_encode($response);
 		}
-		catch(Exception $e) { 
+		catch(\Exception $e) { 
 			echo $e->getMessage();
 		}
 		
@@ -180,7 +178,7 @@ class Media extends \Controller\Core\Admin{
 			if ($id) {
 				$product = $product->load($id);
 				if (!$product) {
-					throw new Exception("No records Found");
+					throw new \Exception("No records Found");
 				}
 			}
 			$edit = \Mage::getBlock('Block\Admin\Product\Edit')->setTableRow($product)->toHtml();
@@ -200,7 +198,7 @@ class Media extends \Controller\Core\Admin{
 		echo json_encode($response);
 
 		}
-		catch(Exception $e) {
+		catch(\Exception $e) {
 			echo $e->getMessage();
 		}
 		

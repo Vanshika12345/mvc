@@ -3,7 +3,7 @@
 $shippingMethods = $this->getTableRow();
 $id = $this->getRequest()->getGet('shippingMethodId');
 ?>
-
+<div class="container">
 <div class="form-group">
     <label for="name">Name:</label>
     <input type="text" class="form-control" name="shippingmethod[name]" id="method_name" value="<?php echo $shippingMethods->name; ?>" placeholder="Enter Shipping Method Name" required="">
@@ -38,4 +38,4 @@ $id = $this->getRequest()->getGet('shippingMethodId');
      
     <button type="button" class="btn btn-danger" >Close</button>
 </div>
-        
+</div>        

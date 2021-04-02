@@ -4,7 +4,6 @@ $baddress = $this->getBillingAddress();
 $saddress = $this->getShippingAddress();
 $id = $this->getRequest()->getGet('addressId');
 ?>
-<br>
 <h5>Billing Address</h5>
 <div>
 <div class="form-group">

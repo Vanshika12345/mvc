@@ -40,7 +40,7 @@ class Option extends \Controller\Core\Admin
 			if($id = $this->getRequest()->getGet('attributeId')){
 				$attribute = $attribute->load($id);
 				if (!$attribute) {
-					throw new Exception("No Data Found");
+					throw new \Exception("No Data Found");
 				}
 			}
 			$edit = \Mage::getBlock('Block\Admin\Attribute\Edit')->setTableRow($attribute)->toHtml();

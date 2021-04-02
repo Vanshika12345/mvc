@@ -64,7 +64,7 @@ class Category extends \Controller\Core\Admin{
 		try{
 			date_default_timezone_set('Asia/Kolkata');
 			if (!$this->getRequest()->isPost()) {
-				throw new Exception("Invalid Request");
+				throw new \Exception("Invalid Request");
 
 			}	
 			$category = $this->getCategoryModel();
@@ -76,7 +76,7 @@ class Category extends \Controller\Core\Admin{
 					}
 					$this->getMessage()->setSuccess('Record Updated Successfully');
 				} else {
-					$category->createdAt = date('Y-m-d H:i:s');
+					//$category->createdAt = date('Y-m-d H:i:s');
 					$this->getMessage()->setSuccess('Record Inserted Successfully');
 				}
 				
@@ -173,15 +173,44 @@ class Category extends \Controller\Core\Admin{
 						'html' => $edit
 					]
 				]
-		];
-		header("Content-type: application/json");
-		echo json_encode($response);
+			];
+			header("Content-type: application/json");
+			echo json_encode($response);
 		
-	} catch (Exception $e){
-		echo $e->getMessage();
-	}
+		} catch (Exception $e){
+			echo $e->getMessage();
+		}
 
 	}
+
+	public function filterAction()
+		{
+			$filters = $this->getRequest()->getPost('filter');
+			
+			$filterModel = \Mage::getModel('Model\Admin\Filter');
+			$filterModel->setFilter($filters);
+			
+			$gridHtml = \Mage::getBlock('Block\Admin\Category\Grid')->toHtml();
+				$response = [
+					'status' => 'success',
+					'message' => 'you did it',
+					'element' => [
+						[
+							'selector' => '#moduleGrid',
+							'html' => $gridHtml
+						]
+					]
+			];
+
+			header("Content-type: application/json; charset=utf-8");
+			echo json_encode($response);
+	    }
+	    
+	public function clearFilterAction()
+	{
+		
+	}
+	
 
 }
 

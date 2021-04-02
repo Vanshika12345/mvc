@@ -50,8 +50,6 @@ class Adapter
 	
 	}
 
-	
-
 	function fetchAll($query) {
 		
 		if (!$this->isConnected()) {
@@ -73,6 +71,7 @@ class Adapter
             $this->connection();
         } 
 		$result = $this->getConnect()->query($query);
+		
 		if (!$result) {
 			return false;
 		}
@@ -112,6 +111,16 @@ class Adapter
         } 
 		$result = $this->getConnect()->query($query);
         return true;
+    }
+
+    public function fetchOne($query)
+    {
+    	if (!$this->isConnected()) {
+    		$this->connection();
+    	}
+    	$result = $this->getConnect()->query($query);
+    	$rows = $result->num_rows;
+		return $rows;
     }
 
     public function fetchPairs($query)

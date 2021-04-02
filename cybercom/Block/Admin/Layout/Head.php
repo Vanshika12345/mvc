@@ -1,12 +1,12 @@
 <?php
-namespace Block\Core\Layout;
+namespace Block\Admin\Layout;
 \Mage::loadFileByClassName('Block\Core\Template');
 
 class Head extends \Block\Core\Template
 {
     public function __construct()
     {
-        $this->setTemplate('./View/core/layout/head.php');
+        $this->setTemplate('./View/admin/layout/head.php');
     }
 }
 

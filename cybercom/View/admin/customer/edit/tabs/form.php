@@ -4,7 +4,7 @@ $group = $this->getCustomerGroup();
 
 $id = $this->getRequest()->getGet('customerId');
 ?>
-<br>
+<div class="container">
     <div class="form-group">
         <label>Group </label>
         <select name="customer[groupId]" id="upd_customer_group" class="form-control">
@@ -60,4 +60,5 @@ $id = $this->getRequest()->getGet('customerId');
     <?php endif; ?>
 
     <button type="button" class="btn btn-danger" >Close</button>
+</div>
 </div>

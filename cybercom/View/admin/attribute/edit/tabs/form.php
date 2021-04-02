@@ -1,12 +1,11 @@
 <?php $attribute = $this->getTableRow();?>
 
-<h4 class="text-muted text-weight-bold">Add/Update Attribute</h4>
-
+<div class="container">
 <div class="form-group">
 	<label>Entity Type</label>
 	<select name="attribute[entityTypeId]" class="form-control">
 		<?php foreach($attribute->getEntityType() as $key => $option):?>
-		<option value="<?php echo $key?>" <?php if($attribute->entityType == $key):
+		<option value="<?php echo $key?>" <?php if($attribute->entityTypeId == $key):
 		?>selected <?php endif;?>><?php echo $option; ?></option>
 	<?php endforeach;?>
 	</select>
@@ -49,4 +48,5 @@
 <div class="form-group">
 	<button type="button" name="save" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('save','admin_attribute');?>').resetParam().setParams($('#editForm').serializeArray()).load();">Save</button>
 	<button type="button" name="close" class="btn btn-danger">Close</button>
+</div>
 </div>

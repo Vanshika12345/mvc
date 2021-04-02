@@ -18,10 +18,10 @@ class Url
     {
         return $this->request;
     }
-    public function getUrl($actionName = null,$controllerName=null,$params=[],$resetParams = false) {
+    public function getUrl($actionName = null,$controllerName=null,$params=[],$resetParam = false) {
 
 		$urls = $this->getRequest()->getGet();
-		if ($resetParams) {
+		if ($resetParam) {
 			$urls = [];
 		}
 		if ($actionName == NULL) {
@@ -39,7 +39,6 @@ class Url
 		$query_String = http_build_query($urls);
 		unset($urls);
 		return "http://localhost/cybercom/index.php?$query_String";
-		
 	
 	}
 

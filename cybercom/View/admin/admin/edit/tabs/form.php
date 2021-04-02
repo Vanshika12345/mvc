@@ -2,7 +2,8 @@
 $admin = $this->getTableRow();
 $id = $this->getRequest()->getGet('adminId');
 ?>
-<div class="form-group mt-4">
+<div class="container">
+<div class="form-group">
     <label>Name</label>
     <input type="text" name="admin[username]" id="admin_name" class="form-control" placeholder="Enter Your Name" value="<?php echo $admin->username;?>">
 </div>
@@ -22,4 +23,5 @@ $id = $this->getRequest()->getGet('adminId');
 <div class="form-group">
    <button type="button" class="btn btn-success" name="save" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('save');?>').resetParam().setParams($('#editForm').serializeArray()).setMethod('POST').load();">Save</button>
     <button type="button" class="btn btn-danger" >Close</button>
+</div>
 </div>

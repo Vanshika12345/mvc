@@ -5,7 +5,7 @@ $subCategory = $this->getParentOptions();
 
 ?>
 
-
+<div class="container">
 <div class="form-group">
     <label>Parent Category</label>
     <select name="category[parentId]" id="upd_catparentId" class="form-control">
@@ -47,4 +47,5 @@ $subCategory = $this->getParentOptions();
 <div class="form-group">
         <button type="button" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('save');?>').resetParam().setParams($('#editForm').serializeArray()).setMethod('POST').load();" class="btn btn-success" name="save">Save</button>
     <button type="button" class="btn btn-danger" >Close</button>
+</div>
 </div>

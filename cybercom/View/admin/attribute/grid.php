@@ -41,7 +41,7 @@ $attributeData = $this->getAttribute();
 						 	<td><?php echo $attribute->sortOrder; ?></td>
 						 	<td><?php echo $attribute->backendModel; ?></td>
 						 	
-						 	<td><button class='btn-warning' onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('edit','admin_attribute',['attributeId'=>$attribute->attributeId],true);?>').resetParam().load();"><i class='far fa-edit'></i></button>&nbsp;&nbsp;<button class='btn-danger' onclick ="object.setUrl('<?php echo $this->getUrl()->getUrl('delete','admin_attribute',['attributeId'=>$attribute->attributeId],true); ?>').resetParam().load();"><i class='fas fa-trash-alt'></i></button>
+						 	<td><button type="button" class='btn-warning' onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('edit','admin_attribute',['attributeId'=>$attribute->attributeId],true);?>').resetParam().load();"><i class='far fa-edit'></i></button>&nbsp;&nbsp;<button type="button" class='btn-danger' onclick ="object.setUrl('<?php echo $this->getUrl()->getUrl('delete','admin_attribute',['attributeId'=>$attribute->attributeId],true); ?>').resetParam().load();"><i class='fas fa-trash-alt'></i></button>
 						 	</td>
 						 </tr>
 						<?php endforeach; ?>

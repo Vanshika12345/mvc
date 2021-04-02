@@ -3,7 +3,7 @@
 $paymentMethod = $this->getTableRow();
 $id = $this->getRequest()->getGet('paymentMethodId');
 ?>
-
+<div class="container">
 <div class="form-group">
     <label for="name">Name:</label>
     <input type="text" class="form-control" name="paymentmethod[name]" id="method_name" value="<?php echo $paymentMethod->name; ?>"  placeholder= "Enter Payment Method Name"required>
@@ -32,5 +32,6 @@ $id = $this->getRequest()->getGet('paymentMethodId');
         <button type="button" class="btn btn-success" name="save" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('save','admin_paymentmethod',null,true);?>').resetParam().setParams($('#editForm').serializeArray()).load();">Save</button> 
     <?php endif;?>
         <button type="button" class="btn btn-danger" >Close</button>
+</div>
 </div>
        

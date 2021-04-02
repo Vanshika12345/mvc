@@ -1,5 +1,5 @@
 <?php
-namespace Model\Admin;
+namespace Model\Customer;
 
 \Mage::loadFileByClassName('Model\Core\Session');
 

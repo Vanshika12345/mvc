@@ -63,7 +63,7 @@ class CustomerGroup extends \Controller\Core\Admin{
 			
 			try{
 				if (!$this->getRequest()->isPost()) {
-					throw new Exception("Invalid Request");
+					throw new \Exception("Invalid Request");
 					
 				}
 
@@ -102,7 +102,7 @@ class CustomerGroup extends \Controller\Core\Admin{
 				header("Content-type: application/json");
 				echo json_encode($response);
 
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 
 			echo $e->getMessage();
 			}
@@ -139,7 +139,7 @@ class CustomerGroup extends \Controller\Core\Admin{
 			header("Content-type: application/json");
 			echo json_encode($response);
 			
-		} catch(Exception $e) 
+		} catch(\Exception $e) 
 		{ 
 			echo $e->getMessage();
 		}
@@ -157,7 +157,7 @@ class CustomerGroup extends \Controller\Core\Admin{
 				$customerGroup = $customerGroup->load($id);
 
 				if (!$customerGroup) {
-					throw new Exception("No records found");
+					throw new \Exception("No records found");
 					
 				}
 				
@@ -176,7 +176,7 @@ class CustomerGroup extends \Controller\Core\Admin{
 			header("Content-type: application/json");
 			echo json_encode($response);
 			
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			echo $e->getMessage();
 			}
 	

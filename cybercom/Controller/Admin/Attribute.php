@@ -31,11 +31,12 @@ class Attribute extends \Controller\Core\Admin
 
 		public function editAction()
 		{
+			try{
 			$attribute = \Mage::getModel('Model\Attribute');
 			if($id = $this->getRequest()->getGet('attributeId')){
 				$attribute = $attribute->load($id);
 				if (!$attribute) {
-					throw new Exception("No Data Found");
+					throw new \Exception("No Data Found");
 				}
 			}
 
@@ -56,12 +57,14 @@ class Attribute extends \Controller\Core\Admin
 
 			header('Content-type: application/json');
 			echo json_encode($response);
-
+		}catch(\Exception $e) {
+			echo $e->getMessage();
+		}
 		}
 
 		public function saveAction()
 		{
-			
+			try{
 				$attribute = \Mage::getModel('Model\Attribute');
 				if ($id = $this->getRequest()->getGet('attributeId')) {
 					$attribute = $attribute->load($id);
@@ -75,8 +78,22 @@ class Attribute extends \Controller\Core\Admin
 
 				$attributeData = $this->getRequest()->getPost('attribute');
 				$attribute->setData($attributeData);
-				$attribute->save();
-				$attribute->setEntityAttributes();
+				if($attribute->save()){
+					$model = \Mage::getModel('Model\\'.ucfirst($attribute->entityTypeId));
+					$type = $attribute->backendType;
+			
+					if($type == "VARCHAR"){
+						$query = "ALTER TABLE `{$attribute->entityTypeId}` ADD COLUMN `{$attribute->name}` {$type}(20)";	
+					} else{
+						$query = "ALTER TABLE `{$attribute->entityTypeId}` ADD COLUMN `{$attribute->name}` {$type}";
+					}
+
+					if(!$model->alterTable($query)){
+						$this->getMessage()->setFailure('Error ');	
+					}
+					
+				}
+				//$attribute->setEntityAttributes();
 			$grid = \Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
 			$response = [
 				'status' => 'success',
@@ -92,23 +109,31 @@ class Attribute extends \Controller\Core\Admin
 
 			header('Content-type: application/json');
 			echo json_encode($response);
+		}catch(\Exception $e) {
+			echo $e->getMessage();
+		}
 
 		}
 
 	
 		public function deleteAction()
 		{
+			try{
 			$id = (int)$this->getRequest()->getGet('attributeId');
 			if (!$id) {
 				$this->getMessage()->setFailure('Id Not Found');
 			}
 			$attribute = \Mage::getModel('Model\Attribute');
 			$attribute->load($id);
+			$model = \Mage::getModel('Model\\'.ucfirst($attribute->entityTypeId));
+			$tableName = $attribute->entityTypeId;
+			$query = "ALTER TABLE `{$tableName}` DROP COLUMN `{$attribute->name}`";
 			
-			if (!$attribute->delete()) {
-				$this->getMessage()->setFailure('Id Invalid');
+			if($model->alterTable($query)){
+				if (!$attribute->delete()) {
+					$this->getMessage()->setFailure('Id Invalid');
+				}	
 			}
-			$attribute->deleteEntity();
 			$this->getMessage()->setSuccess('Record Deleted Successfully');
 		
 			$grid = \Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
@@ -126,7 +151,53 @@ class Attribute extends \Controller\Core\Admin
 
 			header('Content-type: application/json');
 			echo json_encode($response);			
+		}catch(\Exception $e) {
+			echo $e->getMessage();
 		}
+		}
+
+
+		public function filterAction()
+		{
+			$filters = $this->getRequest()->getPost('filter');
+			
+			$filterModel = \Mage::getModel('Model\Admin\Filter');
+			$filterModel->setFilter($filters);
+			
+			$gridHtml = \Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
+				$response = [
+					'status' => 'success',
+					'message' => 'you did it',
+					'element' => [
+						[
+							'selector' => '#moduleGrid',
+							'html' => $gridHtml
+						]
+					]
+			];
+
+			header("Content-type: application/json; charset=utf-8");
+			echo json_encode($response);
+	    }
+
+		public function clearFilterAction()
+		{
+			
+		}
+		
+	    public function testAction() {
+
+	    	$query = "SELECT * FROM attribute WHERE `entityTypeId` = 'product'";
+	    	$attributes = \Mage::getModel('Model\Attribute')->fetchAll($query);
+	    	
+	    	foreach ($attributes->getData() as $key => $attribute) {
+	    		
+	    		print_r($attribute->getOptions());
+	    		
+	    	}
+	    }
+
+
 
 		
 }

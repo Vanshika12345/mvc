@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php echo $this->getBlock('Block\Core\Layout\Head')->toHtml();?>
+    <?php echo $this->getBlock('Block\Customer\Layout\Head')->toHtml();?>
 </head>
 <body>
 <table width="100%">
@@ -10,7 +10,7 @@
     </tr>
     <tr>
         <td>
-            <?php $message = $this->getBlock('Block\Core\Layout\Message');?>
+            <?php //$message = $this->getBlock('Block\Customer\Layout\Message');?>
             <?php echo $this->getContent()->toHtml(); ?>
         </td>
     </tr>

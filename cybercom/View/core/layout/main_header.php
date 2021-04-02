@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand pl-5 text-white" href="#">QuesteCom</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -38,6 +38,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link text-white" onclick ="object.setUrl('<?php echo $this->getUrl()->getUrl('grid','admin_cms');?>').resetParam().load();" href="javascript:void(0);">&nbsp;&nbsp;Cms</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" onclick ="object.setUrl('<?php echo $this->getUrl()->getUrl('grid','admin_brand');?>').resetParam().load();" href="javascript:void(0);">&nbsp;&nbsp;Brand</a>
       </li>
      </ul>
   </div>

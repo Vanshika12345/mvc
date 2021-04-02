@@ -1,4 +1,4 @@
-<?php $attribute = $this->getTableRow()->getOptions() ?>
+<?php $attribute = $this->getTableRow()->getOptions(); ?>
 
 <form action="" method="post">
 <table class="table" id="existingTable">
@@ -31,7 +31,7 @@
 <script type="text/javascript">
 	function removeRow(button) {
 		 $(button).closest('tr').remove();
-
+		 
 	}
 
 	$('#addNewRow').click(function () {

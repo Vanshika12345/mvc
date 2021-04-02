@@ -1,9 +1,10 @@
 <?php
 
+spl_autoload_register(__NAMESPACE__.'\Mage::loadFileByClassName');
 class Mage
 {
 	public static function init() {
-		self::loadFileByClassName('Controller\Core\Front');
+		//self::loadFileByClassName('Controller\Core\Front');
 		\Controller\Core\Front::init();
 
 	}
@@ -27,7 +28,7 @@ class Mage
 
 	public static function getController($className)
 	{
-		self::loadFileByClassName($className);
+		//self::loadFileByClassName($className);
 
 		$className = str_replace("\\"," ",$className);
 		$className = ucwords($className);
@@ -37,7 +38,7 @@ class Mage
 
 	public static function getBlock($className)
 	{
-		self::loadFileByClassName($className);
+		//self::loadFileByClassName($className);
 
 		$className = str_replace("\\"," ",$className);
 		$className = ucwords($className);
@@ -46,7 +47,7 @@ class Mage
 	}
 	public static function getModel($className)
 	{
-		self::loadFileByClassName($className);
+		//self::loadFileByClassName($className);
 
 		$className = str_replace("\\"," ",$className);
 		$className = ucwords($className);
@@ -56,12 +57,25 @@ class Mage
 
 	public static function getCollection($className)
 	{
-		self::loadFileByClassName($className);
+		//self::loadFileByClassName($className);
 
 		$className = str_replace("\\"," ",$className);
 		$className = ucwords($className);
 		$className = str_replace(" ","\\",$className);
 		return new $className();
+	}
+
+	public function setRegistry($key,$value)
+	{
+		$GLOBALS[$key] = $value;
+	}
+
+	public function getRegistry($key,$optional = null)
+	{
+		if(array_key_exists($key, $GLOBALS)){
+			return $GLOBALS[$key];
+		}
+		return $optional;
 	}
 
 	

@@ -1,38 +1,171 @@
 <?php
 
 namespace Block\Admin\Customer;
-\Mage::loadFileByClassName('Block\Core\Template'); 	
+\Mage::loadFileByClassName('Block\Core\Grid'); 	
 
-class Grid extends \Block\Core\Template
+class Grid extends \Block\Core\Grid
 {
 	protected $template = null;	
 	protected $customers = null;
 	protected $groups = null;
+	protected $pages = null;
+	protected $filter = null;
 	
-	function __construct() {
-		parent::__construct();
-		$this->setTemplate('./View/admin/customer/grid.php');
-	}
+	public function prepareCollection($customers = null) {
 
-	public function setCustomers($customers = null) {
-
-		if (!$customers) {
 			$customers = \Mage::getModel('Model\Customer');
-			$customers = $customers->fetchAll();
-		}
-		$this->customers = $customers;
+			
+			$offset = ($this->getPages()->getCurrentPage() - 1) * $this->getPages()->getRecordsPerPage();
+			$query = "SELECT * FROM {$customers->getTableName()}";
+
+
+			if($this->getFilter()->hasFilters()){
+				foreach ($this->getFilter()->getFilters() as $controller => $filters) {
+					if($controller == 'customer'){
+						$query.= " WHERE 1 = 1";
+						foreach ($filters as $type => $filter) {
+							if ($type == 'text') {
+								foreach ($filter as $key => $value) {
+									$query.= " AND (`{$key}` LIKE '%{$value}%')";		
+								}
+							}
+						}
+					}
+				}
+			}
+		$query.= " LIMIT {$offset},{$this->getPages()->getRecordsPerPage()}";
+
+			$customers = $customers->fetchAll($query);
+			foreach ($customers->getData() as $key => &$customer) {
+				$customer->groupId = $this->getCustomerGroups($customer);
+				$customer->address = $this->getBillingAddress($customer);
+			}
+
+		$this->setCollection($customers);
 		return $this;
 	}
 
-	public function getCustomers() {
-
-		if (!$this->customers) {
-			$this->setCustomers();
+	public function getFilter()
+	{
+		if(!$this->filter){
+			$this->filter = \Mage::getModel('Model\Admin\Filter');
 		}
-		return $this->customers;
+		return $this->filter;
 	}
 
-	public function getCustomerGroups($customer = null)
+	public function prepareActions()
+	{
+		$this->addActions('edit',[
+			'label' => 'Edit',
+			'method' =>'getEditUrl',
+			'ajax' => true
+		]);
+		$this->addActions('delete',[
+			'label' => 'Delete',
+			'method' =>'getDeleteUrl',
+			'ajax' => true
+		]);
+		return $this;
+	}
+
+	public function prepareColumns()
+	{
+		$this->addColumn('customerId',[
+			'label' => 'Customer Id',
+			'field' => 'customerId',
+			'type' => 'number',
+			'controller' => 'customer'
+		]);
+		$this->addColumn('fname',[
+			'label' => 'First Name',
+			'field' => 'fname',
+			'type' => 'text',
+			'controller' => 'customer'
+		]);
+		
+		$this->addColumn('lname',[
+			'label' => 'Last Name',
+			'field' => 'lname',
+			'type' => 'text',
+			'controller' => 'customer'
+		]);
+
+		$this->addColumn('email',[
+			'label' => 'Email',
+			'field' => 'email',
+			'type' => 'text',
+			'controller' => 'customer'
+		]);
+
+		$this->addColumn('mobile',[
+			'label' => 'Mobile',
+			'field' => 'mobile',
+			'type' => 'text',
+			'controller' => 'customer'
+		]);
+
+		$this->addColumn('groupId',[
+			'label' => 'Group ',
+			'field' => 'groupId',
+			'type' => 'text',
+			'controller' => 'customer'
+		]);
+		
+		$this->addColumn('address',[
+			'label' => 'Address',
+			'field' => 'address',
+			'type' => 'text',
+			'controller' => 'customer'
+		]);
+		return $this;
+	}
+
+	public function prepareButton()
+	{
+		$this->addButton('addNew',[
+			'label' => 'Add Customer',
+			'method' => 'getaddNewUrl',
+			'ajax' => true
+		]);
+
+		$this->addButton('addfilter',[
+			'label' => 'Add filter',
+			'method' => 'getaddFilterUrl',
+			'ajax' => true
+		]);
+		return $this;
+	}
+
+	public function getTitle()
+	{
+		return 'Manage Customer';
+	}
+	
+	public function getEditUrl($row)
+	{
+		$url = $this->getUrl()->getUrl('edit','admin_customer',['customerId'=>$row->customerId]);
+		return "object.setUrl('{$url}').resetParam().load();";
+	}
+
+	public function getDeleteUrl($row)
+	{
+		$url = $this->getUrl()->getUrl('delete','admin_customer',['customerId'=>$row->customerId]);
+		return "object.setUrl('{$url}').resetParam().load();";
+	}
+	
+	public function getaddNewUrl()
+	{
+		$url = $this->getUrl()->getUrl('edit','admin_customer',null,true);
+		return "object.setUrl('{$url}').resetParam().load()";
+	}
+
+	public function getaddFilterUrl()
+	{
+		$url = $this->getUrl()->getUrl('filter','admin_customer',null);
+		return "object.setUrl('{$url}').resetParam().setParams($('#gridForm').serializeArray()).setMethod('POST').load()";
+	}
+
+	public function getCustomerGroups($customer)
 	{
 		$customerModel = \Mage::getModel('Model\Customer');
 		$name = '';
@@ -74,6 +207,34 @@ class Grid extends \Block\Core\Template
 			return "Enable";
 		}
 		return "Disable";
+	}
+
+	public function setPages(){
+
+		$this->pages = \Mage::getController('Controller\Core\Pager');
+		$customerModel = \Mage::getModel('Model\Customer');
+
+		$query = "SELECT * FROM `{$customerModel->getTableName()}`";	
+		$customerCount = $customerModel->getAdapter()->fetchOne($query);
+		$this->pages->setTotalRecords($customerCount);
+		$this->pages->setRecordsPerPage(2);
+		if(isset($_GET['page'])) {
+			$this->pages->setCurrentPage($_GET['page']);	
+		} else {
+			$this->pages->setCurrentPage(1);	
+		}
+		
+		$this->pages->calculate();
+
+
+	}
+
+	public function getPages()
+	{
+		if(!$this->pages){
+			$this->setPages();
+		}
+		return $this->pages;
 	}
 }
 ?>

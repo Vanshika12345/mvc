@@ -62,7 +62,7 @@ class ShippingMethod extends \Controller\Core\Admin{
 		$method = $this->getShippingModel();
 		try{
 			if (!$this->getRequest()->isPost()) {
-				throw new Exception("Invalid Request");
+				throw new \Exception("Invalid Request");
 				
 			}
 
@@ -95,7 +95,7 @@ class ShippingMethod extends \Controller\Core\Admin{
 				echo json_encode($response);
 
 
-			} catch (Exception $e){
+			} catch (\Exception $e){
 			echo $e->getMessage();
 		}
 		
@@ -110,9 +110,10 @@ class ShippingMethod extends \Controller\Core\Admin{
 				$this->getMessage()->setFailure('Id Not Found');
 			}
 			$method = $this->getShippingModel();
-			$result = $method->delete($id);
-			if(!$result){
-			 $this->getMessage()->setFailure("Id Invalid");
+			$method->load($id);
+			
+			if(!$method->delete()) {
+				$this->getMessage()->setFailure('Id Invalid');
 			}
 			$this->getMessage()->setSuccess('Record Deleted Successfully');
 			
@@ -130,7 +131,7 @@ class ShippingMethod extends \Controller\Core\Admin{
 			header("Content-type: application/json");
 			echo json_encode($response);
 		
-	} catch (Exception $e){
+	} catch (\Exception $e){
 		echo $e->getMessage();
 	}
 
@@ -148,7 +149,7 @@ class ShippingMethod extends \Controller\Core\Admin{
 				$method = $method->load($id);
 
 				if (!$method) {
-					throw new Exception("No records found");
+					throw new \Exception("No records found");
 					
 				}
 				
@@ -167,12 +168,39 @@ class ShippingMethod extends \Controller\Core\Admin{
 				header("Content-type: application/json");
 				echo json_encode($response);
 				
-			} catch (Exception $e){
+			} catch (\Exception $e){
 				echo $e->getMessage();
 			}
 	
 	}
-	
+
+	public function filterAction()
+	{
+		$filters = $this->getRequest()->getPost('filter');
+		
+		$filterModel = \Mage::getModel('Model\Admin\Filter');
+		$filterModel->setFilter($filters);
+		
+		$gridHtml = \Mage::getBlock('Block\Admin\ShippingMethod\Grid')->toHtml();
+			$response = [
+				'status' => 'success',
+				'message' => 'you did it',
+				'element' => [
+					[
+						'selector' => '#moduleGrid',
+						'html' => $gridHtml
+					]
+				]
+		];
+
+		header("Content-type: application/json; charset=utf-8");
+		echo json_encode($response);
+    }
+
+	public function clearFilterAction()
+	{
+		
+	}	
 			
 }
 

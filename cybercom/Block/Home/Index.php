@@ -9,6 +9,7 @@ class Index extends \Block\Core\Template
 		parent::__construct();
 		$this->setTemplate('./View/home/index.php');
 	}
+
 }
 
 ?>

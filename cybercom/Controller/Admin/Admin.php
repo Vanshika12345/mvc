@@ -1,7 +1,6 @@
 <?php
 
 namespace Controller\Admin;
-\Mage::loadFileByClassName('Controller\Core\Admin');
 
 class Admin extends \Controller\Core\Admin{
 
@@ -66,7 +65,7 @@ class Admin extends \Controller\Core\Admin{
 		
 		try{
 			if (!$this->getRequest()->isPost()) {
-				throw new Exception("Invalid Request");
+				throw new \Exception("Invalid Request");
 
 			}
 			$admin = $this->getAdminModel();
@@ -136,7 +135,7 @@ class Admin extends \Controller\Core\Admin{
 		header("Content-type: application/json; charset=utf-8");
 		echo json_encode($response);
 
-		}catch(Exception $e) {
+		}catch(\Exception $e) {
 			echo $e->getMessage();
 		}
 
@@ -176,10 +175,39 @@ class Admin extends \Controller\Core\Admin{
 			header("Content-type: application/json; charset=utf-8");
 			echo json_encode($response);
 
-	} catch (Exception $e){
+	} catch (\Exception $e){
 		echo $e->getMessage();
 	}
 
+	}
+
+	public function filterAction()
+	{
+			$filters = $this->getRequest()->getPost('filter');
+			
+			$filterModel = \Mage::getModel('Model\Admin\Filter');
+			$filterModel->setFilter($filters);
+			
+			$gridHtml = \Mage::getBlock('Block\Admin\Admin\Grid')->toHtml();
+				$response = [
+					'status' => 'success',
+					'message' => 'you did it',
+					'element' => [
+						[
+							'selector' => '#moduleGrid',
+							'html' => $gridHtml
+						]
+					]
+			];
+
+			header("Content-type: application/json; charset=utf-8");
+			echo json_encode($response);
+	
+	}
+
+	public function clearFilterAction()
+	{
+		
 	}
 
 }
