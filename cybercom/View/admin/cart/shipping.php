@@ -5,7 +5,7 @@
 	<?php foreach ($shippingDetails as $shippingDetail): ?>
 		<input type="radio" name="shippingMethod" <?php if ($cart->shippingMethodId == $shippingDetail->shippingMethodId): ?>
 			checked
-		<?php endif ?> value="<?= $shippingDetail->shippingMethodId ?>"> <?= $shippingDetail->name ?> (<?= $shippingDetail->description ?> - $<?= $shippingDetail->amount ?>) <br>
+		<?php endif ?> value="<?= $shippingDetail->shippingMethodId ?>"> <?= $shippingDetail->name ?> (<?= $shippingDetail->description ?> - Rs.<?= $shippingDetail->amount ?>) <br>
 	<?php endforeach ?>
 	<div class="form-group mt-3">
 		<button class="btn btn-success" type="button" onclick="object.resetParam().setForm('#cartForm').setUrl('<?= $this->getUrl()->getUrl('updateShipping') ?>').load()">Update</button>

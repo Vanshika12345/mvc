@@ -13,7 +13,7 @@ $id = $this->getRequest()->getGet('shippingMethodId');
     <input type="text" class="form-control" name="shippingmethod[code]" id="method_code" value="<?php echo $shippingMethods->code; ?>" placeholder="Enter Shipping Method Code" required="">
 </div>
 <div class="form-group">
-    <label for="discount">Amount:</label>
+    <label for="discount">Amount(in Rs.):</label>
     <input type="number" class="form-control" name="shippingmethod[amount]" id="method_amount" value="<?php echo $shippingMethods->amount; ?>" placeholder="Enter Shipping Method Amount" required="">
 </div>
 <div class="form-group">

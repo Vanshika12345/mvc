@@ -17,12 +17,12 @@ $id = $this->getRequest()->getGet('productId');
 </div>
                         
 <div class="form-group">
-    <label>Price</label>
+    <label>Price(in Rs.)</label>
     <input type="text" name="product[price]" id="pprice" class="form-control" placeholder="Enter Product Price" value="<?php echo $products->price;?>">
                                         
 </div>
 <div class="form-group">
-    <label>Discount</label>
+    <label>Discount(in Rs.)</label>
    <input type="text" name="product[discount]" id="pdiscount" class="form-control" placeholder="Enter product discount" value="<?php echo $products->discount;?>">
 </div>
 <div class="form-group">

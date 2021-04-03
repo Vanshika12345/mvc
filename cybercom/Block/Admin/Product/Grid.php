@@ -59,11 +59,8 @@ class Grid extends \Block\Core\Grid
 			'method' =>'getDeleteUrl',
 			'ajax' => true
 		]);
-		$this->addActions('addtoCart',[
-			'label' => 'Add To Cart',
-			'method' =>'getaddCartUrl',
-			'ajax' => true
-		]);
+		
+
 		return $this;
 	}
 
@@ -79,7 +76,11 @@ class Grid extends \Block\Core\Grid
 			'method' => 'getaddFilterUrl',
 			'ajax' => true
 		]);
-
+		$this->addBUtton('addtoCart',[
+			'label' => 'Add Cart',
+			'method' =>'getaddCartUrl',
+			'ajax' => true
+		]);
 		return $this;
 	}
 	public function prepareColumns()
@@ -97,13 +98,13 @@ class Grid extends \Block\Core\Grid
 			'controller' => 'product'
 		]);
 		$this->addColumn('price',[
-			'label' => 'Price',
+			'label' => 'Price(in Rs.)',
 			'field' => 'price',
 			'type' => 'number',
 			'controller' => 'product'
 		]);
 		$this->addColumn('discount',[
-			'label' => 'Discount',
+			'label' => 'Discount(in Rs.)',
 			'field' => 'discount',
 			'type' => 'number',
 			'controller' => 'product'
@@ -128,9 +129,9 @@ class Grid extends \Block\Core\Grid
 		return "object.setUrl('{$url}').resetParam().load();";
 	}
 
-	public function getaddCartUrl($row)
+	public function getaddCartUrl()
 	{
-		$url = $this->getUrl()->getUrl('index','admin_cart',['id'=>$row->productId]);
+		$url = $this->getUrl()->getUrl('index','admin_cart');
 		return "object.setUrl('{$url}').resetParam().load();";
 	}
 

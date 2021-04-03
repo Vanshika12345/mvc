@@ -12,10 +12,7 @@ class Products extends \Block\Core\Grid
 		$product = \Mage::getModel('Model\Product');
 		$offset = ($this->getPages()->getCurrentPage() - 1) * $this->getPages()->getRecordsPerPage();
 
-		$query = "SELECT * FROM {$product->getTableName()}";
-
-		
-		$query .= " LIMIT {$offset},{$this->getPages()->getRecordsPerPage()}";
+		$query = "SELECT * FROM {$product->getTableName()} LIMIT {$offset},{$this->getPages()->getRecordsPerPage()}";
 
 		$collection = $product->fetchAll($query);
 		$this->setCollection($collection);
@@ -52,20 +49,14 @@ class Products extends \Block\Core\Grid
 		]);
 		$this->addColumn('price',[
 			'field' => 'price',
-			'label' => 'Price',
+			'label' => 'Price(in Rs.)',
 			'type' => 'decimal',
 			'controller' => 'cart'
 		]);
 		$this->addColumn('discount',[
 			'field' => 'discount',
-			'label' => 'Discount',
+			'label' => 'Discount(in Rs.)',
 			'type' => 'decimal',
-			'controller' => 'cart'
-		]);
-		$this->addColumn('status',[
-			'field' => 'status',
-			'label' => 'Status',
-			'type' => 'text',
 			'controller' => 'cart'
 		]);
 		return $this;

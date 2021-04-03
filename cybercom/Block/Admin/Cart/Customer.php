@@ -16,6 +16,11 @@ class Customer extends \Block\Core\Template
 		$customer = \Mage::getModel('Model\Customer');
 		return $customer->fetchAll();
 	}
+
+	public function getCart()
+	{
+		return \Mage::getModel('Model\Cart')->load(\Mage::getModel('Model\Admin\Session')->cartId);
+	}
 }
 
 

@@ -61,16 +61,6 @@ class Cart extends Core\Table
 		return $cartItems;
 	}
 
-	public function getCartAddresses()
-	{
-		$key = $this->getPrimaryKey();
-
-		$cartAddress = \Mage::getModel('Model\Cart\Address');
-		$query = "SELECT * FROM `{$cartAddress->getTableName()}` WHERE `{$key}` = '{$this->$key}'";
-		$cartAddresses = $cartAddress->fetchAll($query);
-		return $cartAddresses;
-	}
-
 	public function getBillingAddress()
 	{
 		$key = $this->getPrimaryKey();

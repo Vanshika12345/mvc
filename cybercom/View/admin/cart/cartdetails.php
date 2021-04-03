@@ -7,9 +7,9 @@
 		</td>
 		<td>
 			<?php if ($cartDetails): ?>
-				$<?= $cartDetails->total ?>
+				Rs.<?= $cartDetails->total ?>
 			<?php else: ?>
-				$0.00
+				Rs.0.00
 			<?php endif ?>
 		</td>
 	</tr>
@@ -19,9 +19,9 @@
 		</td>
 		<td>
 			<?php if ($cartDetails): ?>
-				$<?= $cartDetails->shippingAmount ?>
+				Rs.<?= $cartDetails->shippingAmount ?>
 			<?php else: ?>
-				$0.00
+				Rs.0.00
 			<?php endif ?>
 		</td>
 	</tr>
@@ -31,15 +31,15 @@
 		</td>
 		<td>
 			<?php if ($cartDetails): ?>
-				$<?= $cartDetails->total + $cartDetails->shippingAmount ?>
+				Rs.<?= $cartDetails->total + $cartDetails->shippingAmount ?>
 			<?php else: ?>
-				$0.00
+				Rs.0.00
 			<?php endif ?>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('placeOrder','admin_cart');?>').resetParam().load();">Place Order</button>
+			<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('placeOrder','admin_order');?>').resetParam().load();">Place Order</button>
 		</td>
 	</tr>
 </table>

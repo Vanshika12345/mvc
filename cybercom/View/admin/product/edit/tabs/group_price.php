@@ -13,8 +13,8 @@ $group = $this->getCustomerGroup();
 		<tr>
 			<th>Group Id</th>
 			<th>Group Name</th>
-			<th>Price</th>
-			<th>Group Price</th>
+			<th>Price(in Rs.)</th>
+			<th>Group Price(in Rs.)</th>
 		</tr>
 	</thead>
 	<tbody>

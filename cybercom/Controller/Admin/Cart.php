@@ -6,12 +6,21 @@ class Cart extends \Controller\Core\Admin
 
 	public function indexAction()
 	{
-		$layout = $this->getLayout();
-		$content = $layout->getContent();
-		$productGrid = \Mage::getBlock('Block\Admin\Cart\Index');
-		$content->addChild($productGrid,'grid');
-		echo $this->renderLayout();
+		$productGrid = \Mage::getBlock('Block\Admin\Cart\Index')->toHtml();
+		$response = [
+				'status' => 'success',
+				'message' => 'cart displayed',
+				'element'=> [
+					[
+					'selector' => '#moduleGrid',
+					'html' => $productGrid
+					]
+				]
+			];
 
+			header("Content-type:application/json");
+			echo json_encode($response);
+		
 	}
 
 	public function gridAction()
@@ -352,13 +361,6 @@ class Cart extends \Controller\Core\Admin
 		echo json_encode($response);
 	}
 
-
-
-	public function placeOrderAction()
-	{
-		$cartId = \Mage::getModel('Model\Admin\Session')->cartId;
-		
-	}
 
 }
 ?>

@@ -31,8 +31,8 @@ class Grid extends \Block\Core\Grid
 				}
 			}
 		
-		$query.= "LIMIT {$offset},{$this->getPages()->getRecordsPerPage()}";
-
+		$query.= " LIMIT {$offset},{$this->getPages()->getRecordsPerPage()}";
+		//echo $query;
 		$attribute = $attribute->fetchAll($query);
 		$this->setCollection($attribute);
 		return $this;

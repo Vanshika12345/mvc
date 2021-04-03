@@ -13,7 +13,7 @@ $products= $this->getProducts();
 						<th>Id</th>
 						<th>Name</th>
 						<th>Sku</th>
-						<th>Price</th>
+						<th>Price(in Rs.)</th>
 						<th>Discount</th>
 						<th>Quantity</th>
 						<th>Status</th>
