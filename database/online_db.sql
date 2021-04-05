@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 02, 2021 at 04:15 PM
+-- Generation Time: Apr 05, 2021 at 01:33 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -85,8 +85,7 @@ CREATE TABLE `attribute_option` (
 --
 
 INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) VALUES
-(10, 'brown', 1, 1),
-(11, 'black', 1, 2);
+(10, 'brown', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -136,7 +135,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cartId`, `customerId`, `sessionId`, `total`, `discount`, `paymentMethodId`, `shippingMethodId`, `shippingAmount`, `createdAt`) VALUES
-(1, 3, '', '1963.00', '0.00', 0, 0, '0.00', '2021-04-02 19:21:48');
+(2, 4, '', '3120.00', '0.00', 8, 6, '50.00', '2021-04-04 22:44:17'),
+(3, 3, '', '3540.31', '0.00', 8, 6, '50.00', '2021-04-04 22:47:40');
 
 -- --------------------------------------------------------
 
@@ -163,7 +163,11 @@ CREATE TABLE `cart_address` (
 
 INSERT INTO `cart_address` (`cartAddressId`, `cartId`, `addressId`, `address_type`, `address`, `city`, `state`, `country`, `zipcode`, `sameAsBilling`) VALUES
 (1, 1, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
-(2, 1, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0);
+(2, 1, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(3, 2, 0, 2, '24,Sharda Apartment', 'Ahmedabad', 'Gujarat', 'India', 380021, 0),
+(4, 2, 0, 1, '24,Sharda Apartment', 'Ahmedabad', 'Gujarat', 'India', 380021, 0),
+(5, 3, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(6, 3, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0);
 
 -- --------------------------------------------------------
 
@@ -187,7 +191,11 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`cartItemId`, `cartId`, `productId`, `quantity`, `basePrice`, `price`, `discount`, `createdAt`) VALUES
-(1, 1, 1, 1, '1963.00', '1963.00', '125.00', '2021-04-02 15:52:40');
+(4, 2, 1, 1, '1963.00', '1963.00', '125.00', '2021-04-04 19:14:20'),
+(5, 2, 4, 1, '1157.00', '1157.00', '100.00', '2021-04-04 19:14:24'),
+(6, 3, 3, 1, '1154.29', '1154.29', '120.00', '2021-04-04 19:18:25'),
+(7, 3, 6, 1, '1148.40', '1148.40', '125.00', '2021-04-04 19:18:29'),
+(8, 3, 7, 1, '1237.62', '1237.62', '130.00', '2021-04-04 19:18:30');
 
 -- --------------------------------------------------------
 
@@ -390,6 +398,47 @@ INSERT INTO `cms_table` (`pageId`, `title`, `identifier`, `content`, `status`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `config`
+--
+
+CREATE TABLE `config` (
+  `configId` int(11) NOT NULL,
+  `groupId` int(11) NOT NULL,
+  `title` varchar(120) NOT NULL,
+  `code` varchar(120) NOT NULL,
+  `value` varchar(120) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `config`
+--
+
+INSERT INTO `config` (`configId`, `groupId`, `title`, `code`, `value`, `createdAt`) VALUES
+(1, 3, 'site name', 'site_name', 'Questecom', '2021-04-05 13:16:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `config_group`
+--
+
+CREATE TABLE `config_group` (
+  `groupId` int(11) NOT NULL,
+  `name` varchar(120) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `config_group`
+--
+
+INSERT INTO `config_group` (`groupId`, `name`, `createdAt`) VALUES
+(3, 'general', '2021-04-05 13:14:54');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer_address`
 --
 
@@ -471,15 +520,96 @@ INSERT INTO `customer_group` (`groupId`, `name`, `default_type`, `createdAt`) VA
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `order_address`
+--
+
+CREATE TABLE `order_address` (
+  `orderAddressId` int(11) NOT NULL,
+  `orderId` int(11) NOT NULL,
+  `addressId` int(11) NOT NULL,
+  `address_type` tinyint(2) NOT NULL,
+  `address` varchar(120) NOT NULL,
+  `city` varchar(80) NOT NULL,
+  `state` varchar(80) NOT NULL,
+  `country` varchar(80) NOT NULL,
+  `zipcode` int(6) NOT NULL,
+  `sameAsBilling` tinyint(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_address`
+--
+
+INSERT INTO `order_address` (`orderAddressId`, `orderId`, `addressId`, `address_type`, `address`, `city`, `state`, `country`, `zipcode`, `sameAsBilling`) VALUES
+(1, 1, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(2, 1, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(3, 2, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(4, 2, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(5, 3, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(6, 3, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(7, 4, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(8, 4, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_item`
+--
+
+CREATE TABLE `order_item` (
+  `orderItemId` int(11) NOT NULL,
+  `orderId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `quantity` int(5) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount` decimal(5,2) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_item`
+--
+
+INSERT INTO `order_item` (`orderItemId`, `orderId`, `productId`, `quantity`, `price`, `discount`, `createdAt`) VALUES
+(1, 1, 3, 1, '1154.29', '120.00', '2021-04-04 19:19:40'),
+(2, 1, 6, 1, '1148.40', '125.00', '2021-04-04 19:19:40'),
+(3, 1, 7, 1, '1237.62', '130.00', '2021-04-04 19:19:40'),
+(4, 2, 3, 1, '1154.29', '120.00', '2021-04-04 19:24:09'),
+(5, 2, 6, 1, '1148.40', '125.00', '2021-04-04 19:24:09'),
+(6, 2, 7, 1, '1237.62', '130.00', '2021-04-04 19:24:09'),
+(7, 3, 3, 1, '1154.29', '120.00', '2021-04-04 19:27:43'),
+(8, 3, 6, 1, '1148.40', '125.00', '2021-04-04 19:27:43'),
+(9, 3, 7, 1, '1237.62', '130.00', '2021-04-04 19:27:44'),
+(10, 4, 3, 1, '1154.29', '120.00', '2021-04-04 20:33:18'),
+(11, 4, 6, 1, '1148.40', '125.00', '2021-04-04 20:33:18'),
+(12, 4, 7, 1, '1237.62', '130.00', '2021-04-04 20:33:19');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `order_table`
 --
 
 CREATE TABLE `order_table` (
   `orderId` int(11) NOT NULL,
-  `product_name` varchar(150) NOT NULL,
-  `quantity` varchar(5) NOT NULL,
-  `total_amount` decimal(10,2) NOT NULL
+  `customerId` int(11) NOT NULL,
+  `discount` decimal(5,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `shippingMethodId` int(11) NOT NULL,
+  `paymentMethodId` int(11) NOT NULL,
+  `shippingAmount` decimal(10,2) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_table`
+--
+
+INSERT INTO `order_table` (`orderId`, `customerId`, `discount`, `total`, `shippingMethodId`, `paymentMethodId`, `shippingAmount`, `createdAt`) VALUES
+(1, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-04 22:49:40'),
+(2, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-04 22:54:09'),
+(3, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-04 22:57:43'),
+(4, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-05 00:03:17');
 
 -- --------------------------------------------------------
 
@@ -1256,10 +1386,10 @@ CREATE TABLE `shipping_methods` (
 --
 
 INSERT INTO `shipping_methods` (`shippingMethodId`, `name`, `code`, `amount`, `description`, `status`, `createdAt`) VALUES
-(5, 'Express Delivery 1 Day', 'expressdelivery1', '100', 'It delivers within 1 day of order', '1', '2021-03-27 15:18:14'),
-(6, 'Platinum Delivery 3 Day', 'platinumdelivery3', '50', 'It delivers within 3 day of order', '1', '2021-03-27 15:19:09'),
-(7, 'Free delivery 7 Day', 'freedelivery', '0', 'It delivers within 7 days without any charge ', '1', '2021-03-27 15:20:00'),
-(8, 'Gold Delivery 2 Day', 'goldelivery2day', '70', 'It delivers within 2 days of order', '1', '2021-03-31 09:06:08');
+(5, 'Express Delivery', 'expressdelivery1', '100', '1 Day ', '1', '2021-03-27 15:18:14'),
+(6, 'Platinum Delivery', 'platinumdelivery3', '50', '3 Days', '1', '2021-03-27 15:19:09'),
+(7, 'Free delivery', 'freedelivery', '0', '7 days ', '1', '2021-03-27 15:20:00'),
+(8, 'Gold Delivery', 'goldelivery2day', '70', '2 Days', '1', '2021-03-31 09:06:08');
 
 --
 -- Indexes for dumped tables
@@ -1328,6 +1458,18 @@ ALTER TABLE `cms_table`
   ADD UNIQUE KEY `identifier` (`identifier`);
 
 --
+-- Indexes for table `config`
+--
+ALTER TABLE `config`
+  ADD PRIMARY KEY (`configId`);
+
+--
+-- Indexes for table `config_group`
+--
+ALTER TABLE `config_group`
+  ADD PRIMARY KEY (`groupId`);
+
+--
 -- Indexes for table `customer_address`
 --
 ALTER TABLE `customer_address`
@@ -1344,6 +1486,18 @@ ALTER TABLE `customer_details`
 --
 ALTER TABLE `customer_group`
   ADD PRIMARY KEY (`groupId`);
+
+--
+-- Indexes for table `order_address`
+--
+ALTER TABLE `order_address`
+  ADD PRIMARY KEY (`orderAddressId`);
+
+--
+-- Indexes for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`orderItemId`);
 
 --
 -- Indexes for table `order_table`
@@ -1410,7 +1564,7 @@ ALTER TABLE `attribute`
 -- AUTO_INCREMENT for table `attribute_option`
 --
 ALTER TABLE `attribute_option`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `brand`
@@ -1422,19 +1576,19 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cart_address`
 --
 ALTER TABLE `cart_address`
-  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cartAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -1455,6 +1609,18 @@ ALTER TABLE `cms_table`
   MODIFY `pageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `config`
+--
+ALTER TABLE `config`
+  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `config_group`
+--
+ALTER TABLE `config_group`
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `customer_address`
 --
 ALTER TABLE `customer_address`
@@ -1473,10 +1639,22 @@ ALTER TABLE `customer_group`
   MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `order_address`
+--
+ALTER TABLE `order_address`
+  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `order_table`
 --
 ALTER TABLE `order_table`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `payment_method`

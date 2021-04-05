@@ -15,7 +15,7 @@
 		<tr>
 			<td><input type="text" name="exist[<?php echo $option->optionId ?>][name]" value="<?php echo $option->name;?>" class="form-control"></td>
 			<td><input type="text" name="exist[<?php echo $option->optionId ?>][sortOrder]" value="<?php echo $option->sortOrder;?>" class="form-control"></td>
-			<td><input type="submit" name="removeOption" onclick="removeRow(this)" value="Remove" class="btn btn-danger"></td>
+			<td><input type="submit" name="removeOption" onclick="removeRow(this)"></td>
 		</tr>
 		<?php endforeach;?>
 	<?php endif; ?>

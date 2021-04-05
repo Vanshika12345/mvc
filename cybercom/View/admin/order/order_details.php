@@ -19,7 +19,8 @@
 		</td>
 		<td>
 			<?php if ($orderDetails): ?>
-				Rs.<?= $orderDetails->shippingAmount ?>
+				Rs.
+				<?= $orderDetails->shippingAmount ?>
 			<?php else: ?>
 				Rs.0.00
 			<?php endif ?>

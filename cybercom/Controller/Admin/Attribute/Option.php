@@ -60,6 +60,46 @@ class Option extends \Controller\Core\Admin
 		echo json_encode($response);
 	}
 
+	public function deleteAction()
+	{
+		try{
+			$id = (int)$this->getRequest()->getGet('optionId');
+			if (!$id) {
+				$this->getMessage()->setFailure('Id Not Found');
+			}
+			$option = \Mage::getModel('Model\Attribute\Option');
+			$option->load($id);
+			if (!$option->delete()) {
+					$this->getMessage()->setFailure('Id Invalid');
+			}
+		}
+		catch (Exception $e){
+			$this->getMessage()->setFailure($e->getMessage());
+		}
+
+		$attribute = \Mage::getModel('Model\Attribute');
+			if($id = $this->getRequest()->getGet('attributeId')){
+				$attribute = $attribute->load($id);
+				if (!$attribute) {
+					throw new \Exception("No Data Found");
+				}
+			}
+			$edit = \Mage::getBlock('Block\Admin\Attribute\Edit')->setTableRow($attribute)->toHtml();
+
+			$response = [
+			'status' => 'success',
+			'message' => 'you did it',
+			'element' => [
+				[
+					'selector' => '#moduleGrid',
+					'html' => $edit
+				]
+			]
+		];
+
+		header("Content-type: application/json; charset=utf-8");
+		echo json_encode($response);
+	}
 		
 }
 ?>

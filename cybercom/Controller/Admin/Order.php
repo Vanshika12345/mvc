@@ -18,9 +18,9 @@ class Order extends \Controller\Core\Admin
 		$order_details->paymentMethodId = $cart->paymentMethodId;
 		$order_details->total = $cart->total;
 		$order_details->save();
-		if(!$cart->delete()){
+		/*if(!$cart->delete()){
 			$this->getMessage()->setFailure('Id Invalid');
-		}
+		}*/
 		$session = \Mage::getModel('Model\Admin\Session');
 		$session->orderId = $order_details->orderId;
 		$this->addItems();
@@ -65,11 +65,11 @@ class Order extends \Controller\Core\Admin
 				
 		}
 
-		$items = \Mage::getModel('Model\Cart\Item');
+		/*$items = \Mage::getModel('Model\Cart\Item');
 		$query = "DELETE FROM {$items->getTableName()} WHERE `cartId` = '{$cartId}'";
 		if(!$items->getAdapter()->delete($query)){
 			$this->getMessage()->setFailure('Id Invalid');
-		}
+		}*/
 	}
 
 	public function addAddress()
@@ -111,11 +111,11 @@ class Order extends \Controller\Core\Admin
 
 		$orderBillingAddress->save();
 		
-		$address = \Mage::getModel('Model\Cart\Address');
+		/*$address = \Mage::getModel('Model\Cart\Address');
 		$query = "DELETE FROM {$items->getTableName()} WHERE `cartId` = '{$cartId}'";
 		if(!$address->getAdapter()->delete($query)){
 			$this->getMessage()->setFailure('Id Invalid');
-		}
+		}*/
 
 	}
 
