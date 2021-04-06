@@ -12,8 +12,8 @@ class Payment extends \Block\Core\Template
 
 	public function getPaymentDetails()
 	{
-		$shipping = \Mage::getModel('Model\PaymentMethod');
-		return $shipping->fetchAll();
+		$payment = \Mage::getModel('Model\PaymentMethod');
+		return $payment->fetchAll();
 	}
 
 	public function getCart()

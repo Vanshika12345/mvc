@@ -60,7 +60,11 @@ class Grid extends \Block\Core\Grid
 			'ajax' => true
 		]);
 		
-
+		$this->addActions('addtoCart',[
+			'label' => 'Add Cart',
+			'method' =>'getaddToCartUrl',
+			'ajax' => true
+		]);
 		return $this;
 	}
 
@@ -76,7 +80,7 @@ class Grid extends \Block\Core\Grid
 			'method' => 'getaddFilterUrl',
 			'ajax' => true
 		]);
-		$this->addBUtton('addtoCart',[
+		$this->addButton('addtoCart',[
 			'label' => 'Add Cart',
 			'method' =>'getaddCartUrl',
 			'ajax' => true
@@ -132,6 +136,12 @@ class Grid extends \Block\Core\Grid
 	public function getaddCartUrl()
 	{
 		$url = $this->getUrl()->getUrl('index','admin_cart');
+		return "object.setUrl('{$url}').resetParam().load();";
+	}
+
+	public function getaddToCartUrl($row)
+	{
+		$url = $this->getUrl()->getUrl('addToCart','admin_cartCont',['productId'=>$row->productId]);
 		return "object.setUrl('{$url}').resetParam().load();";
 	}
 

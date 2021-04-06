@@ -65,11 +65,11 @@ class Order extends \Controller\Core\Admin
 				
 		}
 
-		$items = \Mage::getModel('Model\Cart\Item');
+		/*$items = \Mage::getModel('Model\Cart\Item');
 		$query = "DELETE FROM {$items->getTableName()} WHERE `cartId` = '{$cartId}'";
 		if(!$items->getAdapter()->delete($query)){
 			$this->getMessage()->setFailure('Id Invalid');
-		}
+		}*/
 	}
 
 	public function addAddress()
