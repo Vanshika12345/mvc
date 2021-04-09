@@ -60,11 +60,6 @@ class Grid extends \Block\Core\Grid
 			'ajax' => true
 		]);
 		
-		$this->addActions('addtoCart',[
-			'label' => 'Add Cart',
-			'method' =>'getaddToCartUrl',
-			'ajax' => true
-		]);
 		return $this;
 	}
 
@@ -80,11 +75,7 @@ class Grid extends \Block\Core\Grid
 			'method' => 'getaddFilterUrl',
 			'ajax' => true
 		]);
-		$this->addButton('addtoCart',[
-			'label' => 'Add Cart',
-			'method' =>'getaddCartUrl',
-			'ajax' => true
-		]);
+		
 		return $this;
 	}
 	public function prepareColumns()

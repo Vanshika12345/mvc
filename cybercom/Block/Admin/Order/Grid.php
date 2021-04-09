@@ -15,8 +15,6 @@ class Grid extends \Block\Core\Grid
 		$query = "SELECT o.*,c.* FROM `{$orderModel->getTableName()}`as o INNER JOIN `customer_details` as c ON o.customerId = c.customerId LIMIT {$offset},{$this->getPages()->getRecordsPerPage()}";
 		$orderModel = $orderModel->fetchAll($query);
 		$this->setCollection($orderModel);
-		// print_r($this->setCollection($orderModel));
-		// die();
 		return $this;	
 	}
 

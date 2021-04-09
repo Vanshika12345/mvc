@@ -96,7 +96,9 @@ class CartCont extends \Model\Core\Table{
 		}
 		return $payment;
 	}
+    
     public function addItemToCart($product,$quantity,$addMode = false){
+        
         $query = "SELECT * FROM `cart_item` WHERE `cartId` = '{$this->cartId}' AND 'productId' = '{$product->productId}'";
 
         $cartItem = \Mage::getModel('Model\Cart\Item');
@@ -107,10 +109,8 @@ class CartCont extends \Model\Core\Table{
             $cartItem->save();
             return true;
         }
-
-        $cartModelItem = \Mage::getModel('Model\Cart\Item');
         
-
+        $cartModelItem = \Mage::getModel('Model\Cart\Item');
         $cartModelItem->cartId = $this->cartId;
         $cartModelItem->productId = $product->productId;
         $cartModelItem->price = $product->price;

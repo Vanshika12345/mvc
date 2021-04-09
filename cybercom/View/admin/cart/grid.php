@@ -28,7 +28,7 @@
 			</div>	
 			<div class="row mt-4">
 			<div class="col" style="overflow-y: scroll; height: 450px" id="productContent">
-				<?php echo $this->getBlock('Block\Admin\CartCont\Products')->toHtml() ?>
+				<?php echo $this->getBlock('Block\Admin\Cart\Products')->toHtml() ?>
 			</div>
 		</div>
 			<div class="container mt-5">
@@ -126,7 +126,7 @@
 			<thead>
 					<tr>
 						<th>Cart Id</th>
-						<th>Product Id</th>
+						<th>Product Name</th>
 						<th>Quantity</th>
 						<th>Price</th>
 						<th>Row Total</th>
@@ -140,9 +140,9 @@
 				<?php foreach ($cartItems->getData() as $key => $item) :?>
 				 <tr>
 				 	<td><?php echo $item->cartItemId; ?></td>
-				 	<td><?php echo $item->productId;?></td>
+				 	<td><?php echo $item->getProduct()->name;?></td>
 				 	<td><input type="number" name="quantity[<?php echo $item->cartItemId; ?>]" class="form-control" value="<?php echo $item->quantity;?>"></td>
-				 	<td><?php echo $item->price;?></td>
+				 	<td><input type="number" name="price[<?php echo $item->cartItemId; ?>]" class="form-control" value="<?php echo $item->price;?>"></td>
 				 	<td><?php echo $item->quantity * $item->price; ?></td>
 				 	<td><?php echo $item->discount* $item->quantity; ?></td>
 				 	<td><?php echo ($item->quantity * $item->price)- $item->discount;?></td>
@@ -194,7 +194,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('placeOrder','admin_order');?>').resetParam().load();">Place Order</button>
+					<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('placeOrder','admin_cartCont');?>').resetParam().load();">Place Order</button>
 				</td>
 			</tr>
 		</table>

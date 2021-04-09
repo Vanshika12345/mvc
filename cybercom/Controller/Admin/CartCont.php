@@ -16,7 +16,7 @@ class CartCont extends \Controller\Core\Admin
 			}
 
 			$cart = $this->getCart();
-			$cart->addItemToCart($product,1,true);
+			//$cart->addItemToCart($product,1,true);
 
 			$this->getMessage()->setSuccess('Item Successfully add to cart');
 
@@ -58,17 +58,22 @@ class CartCont extends \Controller\Core\Admin
 		if($cart){
 			return $cart;
 		}
-		$cart = \Mage::getModel('Model\CartCont');
-		$cart->customerId = $session->customerId;
-		$cart->createdAt = date('Y-m-d H:i:s');
-		$cart->save();
-		return $cart;
-		
+        if($session->customerId){
+    		$cart = \Mage::getModel('Model\CartCont');
+    		$cart->customerId = $session->customerId;
+    		$cart->createdAt = date('Y-m-d H:i:s');
+    		$cart->save();
+    		return $cart;
+        }
+
+		return \Mage::getModel('Model\CartCont');
 	}
 
 
     public function updateAction(){
+
         try{
+
             $quantities = $this->getRequest()->getPost('quantity');
 
             $cart = $this->getCart();
@@ -114,6 +119,7 @@ class CartCont extends \Controller\Core\Admin
     }
 
     public function selectCustomerAction(){
+        
         $customerId = $this->getRequest()->getPost('customer');
         $this->getCart($customerId);
         $gridHtml = \Mage::getBlock('Block\Admin\CartCont\Grid');
@@ -253,7 +259,7 @@ class CartCont extends \Controller\Core\Admin
         $cart->shippingMethodId = $methodId;
         $cart->save();
         $cartClone->cartId = $cartId;
-
+        
         $cartClone->shippingAmount = $cart->getShippingMethod()->amount;
         $cartClone->save();
         $gridHtml = \Mage::getBlock('Block\Admin\CartCont\Grid');
@@ -306,6 +312,122 @@ class CartCont extends \Controller\Core\Admin
        
     }
 
+    public function placeOrderAction()
+    {
+        $id = $this->getCart()->cartId;
+        $cart = \Mage::getModel('Model\Cart')->load($id);
+        $order_details = \Mage::getModel('Model\Order');
+
+        
+        $order_details->shippingMethodId = $cart->shippingMethodId;
+        $order_details->customerId = $cart->customerId;
+        $order_details->discount = $cart->discount;
+        $order_details->shippingAmount = $cart->shippingAmount;
+        $order_details->paymentMethodId = $cart->paymentMethodId;
+        $order_details->total = $cart->total;
+        $order_details->save();
+        /*if(!$cart->delete()){
+            $this->getMessage()->setFailure('Id Invalid');
+        }*/
+        $session = \Mage::getModel('Model\Admin\Session');
+        $session->orderId = $order_details->orderId;
+        $this->addItems();
+        $this->addAddress();
+
+        $order = \Mage::getBlock('Block\Admin\Order\Grid')->toHtml();
+        $response = [
+            'status' => 'success',
+            'message' => 'cart displayed',
+            'element'=> [   
+                [
+                    'selector' => '#moduleGrid',
+                    'html' => $order
+                ]
+            ]
+        ];
+        header("Content-type:application/json");
+        echo json_encode($response);
+    }
+
+    public function addItems()
+    {
+        $cartId = $this->getCart()->cartId;
+        $items = \Mage::getModel('Model\Cart\Item');
+        
+        $orderId = \Mage::getModel('Model\Admin\Session')->orderId;
+        
+        $query = "SELECT * FROM {$items->getTableName()} WHERE `cartId` = '{$cartId}'";
+        $items = $items->fetchAll($query);
+        if($items){
+            foreach ($items->getData() as $key => $item) 
+            {
+                $order_items = \Mage::getModel('Model\Order\Item');
+                $order_items->orderId = $orderId;
+                $order_items->createdAt = date("Y-m-d H:i:s");
+                $order_items->price = $item->price;
+                $order_items->discount = $item->discount;
+                $order_items->productId = $item->productId;
+                $order_items->quantity = $item->quantity;
+                $order_items->save();
+            }   
+                
+        }
+
+        /*$items = \Mage::getModel('Model\Cart\Item');
+        $query = "DELETE FROM {$items->getTableName()} WHERE `cartId` = '{$cartId}'";
+        if(!$items->getAdapter()->delete($query)){
+            $this->getMessage()->setFailure('Id Invalid');
+        }*/
+    }
+
+    public function addAddress()
+    {
+        $cartId = $this->getCart()->cartId;
+        
+        $orderId = \Mage::getModel('Model\Admin\Session')->orderId;
+        $cartAddress = \Mage::getModel('Model\Cart\Address');
+        $query = "SELECT * FROM {$cartAddress->getTableName()} WHERE `cartId` = '{$cartId}' AND `address_type` = '2'";
+        $cartAddress = $cartAddress->fetchRow($query);
+        $orderAddress = \Mage::getModel('Model\Order\Address');
+        if($cartAddress){
+            $orderAddress->orderId = $orderId;
+            $orderAddress->address = $cartAddress->address;
+            $orderAddress->city = $cartAddress->city;
+            $orderAddress->state = $cartAddress->state;
+            $orderAddress->country = $cartAddress->country;
+            $orderAddress->zipcode = $cartAddress->zipcode;
+            $orderAddress->sameAsBilling = $cartAddress->sameAsBilling;
+            $orderAddress->address_type = 2;
+
+        }
+        $orderAddress->save();
+        
+        $cartBillingAddress = \Mage::getModel('Model\Cart\Address');
+        $query = "SELECT * FROM {$cartBillingAddress->getTableName()} WHERE `cartId` = '{$cartId}' AND `address_type` = '1'";
+        $cartBillingAddress = $cartBillingAddress->fetchRow($query);
+        $orderBillingAddress = \Mage::getModel('Model\Order\Address');
+        if($cartBillingAddress){
+            $orderBillingAddress->orderId = $orderId;
+            $orderBillingAddress->address = $cartBillingAddress->address;
+            $orderBillingAddress->city = $cartBillingAddress->city;
+            $orderBillingAddress->state = $cartBillingAddress->state;
+            $orderBillingAddress->country = $cartBillingAddress->country;
+            $orderBillingAddress->zipcode = $cartBillingAddress->zipcode;
+            $orderBillingAddress->sameAsBilling = $cartBillingAddress->sameAsBilling;
+            $orderBillingAddress->address_type = 1;
+
+        }
+
+        $orderBillingAddress->save();
+        
+        /*$address = \Mage::getModel('Model\Cart\Address');
+        $query = "DELETE FROM {$items->getTableName()} WHERE `cartId` = '{$cartId}'";
+        if(!$address->getAdapter()->delete($query)){
+            $this->getMessage()->setFailure('Id Invalid');
+        }*/
+
+    }
+    
 }
 
 ?>

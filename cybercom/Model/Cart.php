@@ -1,29 +1,76 @@
 <?php 
 namespace Model;
 
-class Cart extends Core\Table
-{
+\Mage::loadFileByClassName('Model\Core\Table');
 
-	function __construct()
-	{
-		$this->setTableName('cart');
-		$this->setPrimaryKey('cartId');
-	}
+class Cart extends \Model\Core\Table{
+    protected $customer = null;
+    protected $items = null;
+    protected $billingAddress = null;
+    protected $shippingAddress = null;
+    protected $paymentMethod = null;
+    protected $shippingMethod = null;
 
-	public function getCustomer()
-	{
-		if(!$this->customerId)
-		{
-			return null;
-		}
-		$customer = \Mage::getModel('Model\Customer')->load($this->customerId);
-		if (!$customer) {
-			return null;
-		}
-		return $customer;
-	}
+    public function __construct(){
+        $this->setTableName('cart');
+        $this->setPrimaryKey('cartId');
+    }
 
-	public function getShippingMethod()
+    public function setCustomer(\Model\Customer $customer){
+        $this->customer = $customer;
+        return $this;
+    }
+
+    public function getCustomer(){
+        if(!$this->customerId)
+        {
+            return null;
+        }
+        $customer = \Mage::getModel('Model\Customer')->load($this->customerId);
+        if (!$customer) {
+            return null;
+        }
+        return $customer;
+    }
+
+    public function setItems(\Model\Cart\Item\Collection $items){
+        $this->items = $items;
+        return $this;
+    }
+
+    public function getItems(){
+        if(!$this->cartId){
+            return false;
+        }
+        $query = "SELECT * FROM cart_item WHERE cartId='{$this->cartId}'";
+        $items = \Mage::getModel('Model\Cart\Item')->fetchAll($query);
+        if(!$items){
+            return null;
+        }
+        $this->setItems($items);
+        return $items;
+    }
+
+        public function getBillingAddress()
+    {
+        $key = $this->getPrimaryKey();
+        $billingAddress = \Mage::getModel('Model\Cart\Address');
+        $query = "SELECT * FROM `{$billingAddress->getTableName()}` WHERE `{$key}` = '{$this->$key}' AND `address_type` = '1'";
+        $billingAddress = $billingAddress->fetchRow($query);
+        return $billingAddress;
+    }
+
+    public function getShippingAddress()
+    {
+        $key = $this->getPrimaryKey();
+        $shippingAddress = \Mage::getModel('Model\Cart\Address');
+        $query = "SELECT * FROM `{$shippingAddress->getTableName()}` WHERE `{$key}` = '{$this->$key}' AND `address_type` = '2'";
+        $shippingAddress = $shippingAddress->fetchRow($query);
+        return $shippingAddress;
+    }
+
+
+    public function getShippingMethod()
 	{
 		if(!$this->shippingMethodId)
 		{
@@ -49,36 +96,31 @@ class Cart extends Core\Table
 		}
 		return $payment;
 	}
+    
+    public function addItemToCart($product,$quantity,$addMode = false){
+        
+        $query = "SELECT * FROM `cart_item` WHERE `cartId` = '{$this->cartId}' AND 'productId' = '{$product->productId}'";
 
-	public function getCartItems()
-	{
-		$key = $this->getPrimaryKey();
+        $cartItem = \Mage::getModel('Model\Cart\Item');
+        $cartItem = $cartItem->fetchRow($query);
 
-		$cartItem = \Mage::getModel('Model\Cart\Item');
-		$query = "SELECT * FROM `{$cartItem->getTableName()}` WHERE `{$key}` = '{$this->$key}'";
+        if($cartItem){
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
+            return true;
+        }
+        
+        $cartModelItem = \Mage::getModel('Model\Cart\Item');
+        $cartModelItem->cartId = $this->cartId;
+        $cartModelItem->productId = $product->productId;
+        $cartModelItem->price = $product->price;
+        $cartModelItem->quantity = $quantity;
+        $cartModelItem->discount = $product->discount;
+        $cartModelItem->createdAt = date("Y-m-d H:i:s");
 
-		$cartItems = $cartItem->fetchAll($query);
-		return $cartItems;
-	}
+        $cartModelItem->save();
 
-	public function getBillingAddress()
-	{
-		$key = $this->getPrimaryKey();
-		$billingAddress = \Mage::getModel('Model\Cart\Address');
-		$query = "SELECT * FROM `{$billingAddress->getTableName()}` WHERE `{$key}` = '{$this->$key}' AND `address_type` = '1'";
-		$billingAddress = $billingAddress->fetchRow($query);
-		return $billingAddress;
-	}
-
-	public function getShippingAddress()
-	{
-		$key = $this->getPrimaryKey();
-		$shippingAddress = \Mage::getModel('Model\Cart\Address');
-		$query = "SELECT * FROM `{$shippingAddress->getTableName()}` WHERE `{$key}` = '{$this->$key}' AND `address_type` = '2'";
-		$shippingAddress = $shippingAddress->fetchRow($query);
-		return $shippingAddress;
-	}
-
+        return true;
+    }
 }
-
 ?>

@@ -1,5 +1,5 @@
 <?php 
-namespace Block\Admin\Cart;
+namespace Block\Admin\CartCont;
 
 \Mage::loadFileByClassName('Block\Core\Grid');
 
@@ -74,7 +74,7 @@ class Products extends \Block\Core\Grid
 
 	public function getAddToCartUrl($row)
 	{
-		$url = $this->getUrl()->getUrl('addToCart',null,['productId' => $row->productId]);
+		$url = $this->getUrl()->getUrl('addToCart',null,['id' => $row->productId]);
 		return "object.setUrl('{$url}').load()";
 	}
 
