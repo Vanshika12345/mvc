@@ -10,7 +10,7 @@
 		<?php if($products):?>
 			<?php foreach($products->getData() as $key => $product):?>
 				<tr>
-					<td><?= $product->name; ?></td>
+					<td><?= $product->getProduct()->name; ?></td>
 					<td><?= $product->quantity; ?></td>
 					<td><?= $product->price; ?></td>
 				</tr>

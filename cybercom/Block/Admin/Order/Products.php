@@ -11,7 +11,8 @@ class Products extends \Block\Core\Template
 
 	public function getProducts()
 	{
-		$products = \Mage::getModel('Model\Order')->getItems();
+		$orderId = $this->getRequest()->getGet('orderId');
+		$products = \Mage::getModel('Model\Order')->load($orderId)->getItems();
 		return $products;
 	}
 

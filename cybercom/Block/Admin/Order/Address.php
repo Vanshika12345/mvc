@@ -13,7 +13,7 @@ class Address extends \Block\Core\Template
 
 	public function getOrderShippingAddress()
 	{
-		$orderId = $this->getRequest()->getGet('orderId');;	
+		$orderId = $this->getRequest()->getGet('orderId');
 		$order = \Mage::getModel('Model\Order')->load($orderId);
 		if ($order) {
 			$shippingAddress = $order->getShippingAddress();

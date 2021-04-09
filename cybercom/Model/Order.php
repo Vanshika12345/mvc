@@ -55,9 +55,9 @@ class Order extends \Model\Core\Table
 
 	public function getItems()
 	{
-		$orderId = $this->orderId;
-		$orderItems = \Mage::getModel('Model\Product');
-		$query = "SELECT o.price,p.name,o.quantity FROM order_item as o INNER JOIN product as p ON  o.productId = p.productId AND o.orderId = '{$orderId}'";
+		$key = $this->getPrimaryKey();
+		$orderItems = \Mage::getModel('Model\Order\Item');
+		$query = "SELECT * FROM {$orderItems->getTableName()} WHERE `{$key}` = '{$this->$key}'";
 		return $orderItems->fetchAll($query);
 	}
 
