@@ -226,7 +226,6 @@ class Customer extends \Controller\Core\Admin{
 			$customer = $this->getCustomerModel();
 			$id = $this->getRequest()->getGet('customerId');
 			if ($id) {
-				
 				$customer = $customer->load($id);
 
 				if (!$customer) {

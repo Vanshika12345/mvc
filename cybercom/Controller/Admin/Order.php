@@ -4,8 +4,32 @@ namespace Controller\Admin;
 
 class Order extends \Controller\Core\Admin
 {
-	
-	function placeOrderAction()
+
+	public function indexAction()
+	{
+		$layout = \Mage::getBlock('Block\Core\Layout');
+		echo $this->renderLayout();
+	}
+
+	public function gridAction()
+	{
+		$grid = \Mage::getBlock('Block\Admin\Order\Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'message' => 'order displayed',
+			'element' => [
+				[
+					'selector' => '#moduleGrid',
+					'html' => $grid
+				]
+			]
+		];
+
+		header('Content-type: application/json');
+		echo json_encode($response);
+	}
+
+	public function placeOrderAction()
 	{
 		$cart = \Mage::getModel('Model\Cart')->load(\Mage::getModel('Model\Admin\Session')->cartId);
 		$order_details = \Mage::getModel('Model\Order');
@@ -119,17 +143,17 @@ class Order extends \Controller\Core\Admin
 
 	}
 
-	public function gridAction()
+	public function viewAction()
 	{
 		try {
 
-			$grid = \Mage::getBlock('Block\Admin\Order\Products')->toHtml();
+			$grid = \Mage::getBlock('Block\Admin\Order\View')->toHtml();
 			$response = [
 				'status' => 'success',
 				'message' => 'cart displayed',
 				'element'=> [
 					[
-					'selector' => '#productContent',
+					'selector' => '#moduleGrid',
 					'html' => $grid
 					]
 				]

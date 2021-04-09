@@ -146,20 +146,22 @@ class Admin extends \Controller\Core\Admin{
 
 		try{
 			
-			$gridHtml = \Mage::getBlock('Block\Admin\Admin\Edit');
 			$admin = $this->getAdminModel();
 			$id = $this->getRequest()->getGet('adminId');
-			if ($id) {
+			if (!$id) {
+				$gridHtml = \Mage::getBlock('Block\Admin\Admin\Edit\Tabs\Form');
 				
+			} else {
 				$admin = $admin->load($id);
+				$gridHtml = \Mage::getBlock('Block\Admin\Admin\Edit');
 
 				if (!$admin) {
 					throw new Exception("No records found");
 					
 				}
-				
+				$gridHtml->setTableRow($admin);
 			}
-			$gridHtml->setTableRow($admin);
+				
 			$gridHtml = $gridHtml->toHtml();
 			$response = [
 				'status' => 'success',

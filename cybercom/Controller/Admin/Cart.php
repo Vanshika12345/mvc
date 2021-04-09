@@ -251,7 +251,7 @@ class Cart extends \Controller\Core\Admin
 
 	public function updateAddressAction()
 	{
-		$cartId = \Mage::getModel('Model\Admin\Session')->cartId;
+		$cartId = $this->getCart()->cartId;
 		if ($this->getRequest()->getGet('type') == "billing") {
 			$billingAddressData = $this->getRequest()->getPost('billing');
 			$billingAddress = \Mage::getModel('Model\Cart')->load($cartId)->getBillingAddress();

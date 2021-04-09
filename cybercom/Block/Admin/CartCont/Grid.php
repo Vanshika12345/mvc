@@ -107,27 +107,4 @@ class Grid extends \Block\Core\Template
 	}
 }
 
-
-
-
-
-
-
-/*$customerBillingAddress = $this->getCart()->getCustomer()->getBillingAddress();
-		if ($customerBillingAddress) 
-		{
-			echo 3;
-			$this->getCart()->setBillingAddress($customerBillingAddress);	
-			$cartBillingAddress = $this->getCart()->getBillingAddress();
-			return $cartBillingAddress;
-		}	*/
-
-
-		/*$customerShippingAddress = $this->getCart()->getCustomer()->getShippingAddress();
-		if ($customerShippingAddress) 
-		{
-			echo 4;
-			 return $this->getCart()->setShippingAddress($customerShippingAddress);
-			 	
-		}*/		
 ?>

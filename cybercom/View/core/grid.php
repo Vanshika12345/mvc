@@ -15,9 +15,9 @@
 								<a onclick="<?= $this->getButtonUrl($button['method']);?>" class="btn btn-success" ><?= $button['label']?></a>
 							<?php endforeach;?>
 						<?php endif;?>
-						
+						<div></div>
 					<table class="table">
-						<br>
+						
 						<thead>
 							<tr>
 							<?php if($columns):?>

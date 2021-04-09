@@ -63,7 +63,7 @@ class Grid extends \Block\Core\Grid
 		return $this;
 	}
 
-	public function prepareButton()
+	public function prepareButtons()
 	{
 		$this->addButton('addNew',[
 			'label' => 'Add Category',

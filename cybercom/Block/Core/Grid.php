@@ -14,7 +14,7 @@ class Grid extends \Block\Core\Template
 		$this->prepareColumns();
 		$this->prepareActions();
 		$this->prepareCollection();
-		$this->prepareButton();
+		$this->prepareButtons();
 	}
 
 
@@ -28,7 +28,7 @@ class Grid extends \Block\Core\Template
 		return $this;
 	}
 
-	public function prepareButton()
+	public function prepareButtons()
 	{
 		return $this;
 	}
@@ -43,7 +43,7 @@ class Grid extends \Block\Core\Template
 	{
 		if(!$this->button)
 		{
-			$this->prepareButton();
+			$this->prepareButtons();
 		}
 		return $this->button;
 	}

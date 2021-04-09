@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 05, 2021 at 01:33 PM
+-- Generation Time: Apr 09, 2021 at 08:36 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -85,7 +85,10 @@ CREATE TABLE `attribute_option` (
 --
 
 INSERT INTO `attribute_option` (`optionId`, `name`, `attributeId`, `sortOrder`) VALUES
-(10, 'brown', 1, 1);
+(10, 'brown', 1, 1),
+(15, 'black', 1, 2),
+(17, 'blue', 1, 3),
+(19, 'white', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -135,8 +138,9 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cartId`, `customerId`, `sessionId`, `total`, `discount`, `paymentMethodId`, `shippingMethodId`, `shippingAmount`, `createdAt`) VALUES
-(2, 4, '', '3120.00', '0.00', 8, 6, '50.00', '2021-04-04 22:44:17'),
-(3, 3, '', '3540.31', '0.00', 8, 6, '50.00', '2021-04-04 22:47:40');
+(1, 3, '', '0.00', '0.00', 0, 0, '0.00', '2021-04-08 19:28:34'),
+(2, 4, '', '0.00', '0.00', 0, 0, '0.00', '2021-04-08 19:29:26'),
+(3, 5, '', '0.00', '0.00', 0, 0, '0.00', '2021-04-08 19:29:32');
 
 -- --------------------------------------------------------
 
@@ -162,12 +166,12 @@ CREATE TABLE `cart_address` (
 --
 
 INSERT INTO `cart_address` (`cartAddressId`, `cartId`, `addressId`, `address_type`, `address`, `city`, `state`, `country`, `zipcode`, `sameAsBilling`) VALUES
-(1, 1, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
-(2, 1, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
-(3, 2, 0, 2, '24,Sharda Apartment', 'Ahmedabad', 'Gujarat', 'India', 380021, 0),
-(4, 2, 0, 1, '24,Sharda Apartment', 'Ahmedabad', 'Gujarat', 'India', 380021, 0),
-(5, 3, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
-(6, 3, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0);
+(1, 2, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(2, 2, 0, 2, '43, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380022, 1),
+(3, 1, 0, 2, '43, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380022, 0),
+(4, 1, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(5, 3, 0, 2, '42, Nehru Park Society', 'Ahmedabad', 'Gujarat', 'India', 380021, 0),
+(6, 3, 0, 1, '			        42, Nehru Park Society			    ', 'Ahmedabad', 'Gujarat', 'India', 380022, 0);
 
 -- --------------------------------------------------------
 
@@ -191,11 +195,10 @@ CREATE TABLE `cart_item` (
 --
 
 INSERT INTO `cart_item` (`cartItemId`, `cartId`, `productId`, `quantity`, `basePrice`, `price`, `discount`, `createdAt`) VALUES
-(4, 2, 1, 1, '1963.00', '1963.00', '125.00', '2021-04-04 19:14:20'),
-(5, 2, 4, 1, '1157.00', '1157.00', '100.00', '2021-04-04 19:14:24'),
-(6, 3, 3, 1, '1154.29', '1154.29', '120.00', '2021-04-04 19:18:25'),
-(7, 3, 6, 1, '1148.40', '1148.40', '125.00', '2021-04-04 19:18:29'),
-(8, 3, 7, 1, '1237.62', '1237.62', '130.00', '2021-04-04 19:18:30');
+(1, 1, 1, 1, '0.00', '1963.00', '125.00', '2021-04-06 11:03:08'),
+(2, 1, 1, 1, '0.00', '1963.00', '125.00', '2021-04-06 11:05:41'),
+(3, 1, 1, 1, '0.00', '1963.00', '125.00', '2021-04-07 08:52:50'),
+(4, 2, 1, 1, '0.00', '1963.00', '125.00', '2021-04-07 08:56:52');
 
 -- --------------------------------------------------------
 
@@ -415,7 +418,10 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`configId`, `groupId`, `title`, `code`, `value`, `createdAt`) VALUES
-(1, 3, 'site name', 'site_name', 'Questecom', '2021-04-05 13:16:00');
+(1, 3, 'site name', 'site_name', 'Questecom', '2021-04-08 15:34:06'),
+(4, 3, 'site logo', 'site_logo', 'logo.png', '2021-04-08 15:46:33'),
+(6, 3, 'another', 'another', 'another', '2021-04-08 15:47:54'),
+(7, 3, '', '', '', '2021-04-08 15:47:54');
 
 -- --------------------------------------------------------
 
@@ -434,7 +440,8 @@ CREATE TABLE `config_group` (
 --
 
 INSERT INTO `config_group` (`groupId`, `name`, `createdAt`) VALUES
-(3, 'general', '2021-04-05 13:14:54');
+(3, 'custom', '2021-04-05 13:14:54'),
+(4, 'general', '2021-04-08 11:01:28');
 
 -- --------------------------------------------------------
 
@@ -458,7 +465,7 @@ CREATE TABLE `customer_address` (
 --
 
 INSERT INTO `customer_address` (`addressId`, `customerId`, `address`, `city`, `state`, `zipcode`, `country`, `address_type`) VALUES
-(1, 3, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', '380023', 'India', '2'),
+(1, 3, '43, Shiv Shakti Apartments', 'Surat', 'Gujarat', '380022', 'India', '2'),
 (2, 3, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', '380023', 'India', '1'),
 (3, 4, '24,Sharda Apartment', 'Ahmedabad', 'Gujarat', '380021', 'India', '2'),
 (4, 4, '24,Sharda Apartment', 'Ahmedabad', 'Gujarat', '380021', 'India', '1'),
@@ -548,7 +555,9 @@ INSERT INTO `order_address` (`orderAddressId`, `orderId`, `addressId`, `address_
 (5, 3, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
 (6, 3, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
 (7, 4, 0, 2, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
-(8, 4, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0);
+(8, 4, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0),
+(9, 5, 0, 2, '43, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380022, 1),
+(10, 5, 0, 1, '42, Shiv Shakti Apartments', 'Surat', 'Gujarat', 'India', 380023, 0);
 
 -- --------------------------------------------------------
 
@@ -582,7 +591,8 @@ INSERT INTO `order_item` (`orderItemId`, `orderId`, `productId`, `quantity`, `pr
 (9, 3, 7, 1, '1237.62', '130.00', '2021-04-04 19:27:44'),
 (10, 4, 3, 1, '1154.29', '120.00', '2021-04-04 20:33:18'),
 (11, 4, 6, 1, '1148.40', '125.00', '2021-04-04 20:33:18'),
-(12, 4, 7, 1, '1237.62', '130.00', '2021-04-04 20:33:19');
+(12, 4, 7, 1, '1237.62', '130.00', '2021-04-04 20:33:19'),
+(13, 5, 1, 1, '1963.00', '125.00', '2021-04-08 14:19:13');
 
 -- --------------------------------------------------------
 
@@ -609,7 +619,8 @@ INSERT INTO `order_table` (`orderId`, `customerId`, `discount`, `total`, `shippi
 (1, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-04 22:49:40'),
 (2, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-04 22:54:09'),
 (3, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-04 22:57:43'),
-(4, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-05 00:03:17');
+(4, 3, '0.00', '3540.31', 6, 8, '50.00', '2021-04-05 00:03:17'),
+(5, 3, '0.00', '1963.00', 8, 8, '70.00', '2021-04-08 17:49:13');
 
 -- --------------------------------------------------------
 
@@ -1389,7 +1400,8 @@ INSERT INTO `shipping_methods` (`shippingMethodId`, `name`, `code`, `amount`, `d
 (5, 'Express Delivery', 'expressdelivery1', '100', '1 Day ', '1', '2021-03-27 15:18:14'),
 (6, 'Platinum Delivery', 'platinumdelivery3', '50', '3 Days', '1', '2021-03-27 15:19:09'),
 (7, 'Free delivery', 'freedelivery', '0', '7 days ', '1', '2021-03-27 15:20:00'),
-(8, 'Gold Delivery', 'goldelivery2day', '70', '2 Days', '1', '2021-03-31 09:06:08');
+(8, 'Gold Delivery', 'goldelivery2day', '70', '2 Days', '1', '2021-03-31 09:06:08'),
+(9, '1', '1', '1', '1', '0', '2021-04-08 10:58:48');
 
 --
 -- Indexes for dumped tables
@@ -1564,7 +1576,7 @@ ALTER TABLE `attribute`
 -- AUTO_INCREMENT for table `attribute_option`
 --
 ALTER TABLE `attribute_option`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `brand`
@@ -1588,7 +1600,7 @@ ALTER TABLE `cart_address`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `cartItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -1612,13 +1624,13 @@ ALTER TABLE `cms_table`
 -- AUTO_INCREMENT for table `config`
 --
 ALTER TABLE `config`
-  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `configId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `config_group`
 --
 ALTER TABLE `config_group`
-  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
@@ -1642,19 +1654,19 @@ ALTER TABLE `customer_group`
 -- AUTO_INCREMENT for table `order_address`
 --
 ALTER TABLE `order_address`
-  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `orderAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `orderItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `order_table`
 --
 ALTER TABLE `order_table`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payment_method`
@@ -1690,7 +1702,7 @@ ALTER TABLE `product_media`
 -- AUTO_INCREMENT for table `shipping_methods`
 --
 ALTER TABLE `shipping_methods`
-  MODIFY `shippingMethodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `shippingMethodId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

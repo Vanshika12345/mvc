@@ -17,24 +17,39 @@
 			<td><input type="text" name="exist[<?php echo $configuration->configId ?>][title]" value="<?php echo $configuration->title;?>" class="form-control"></td>
 			<td><input type="text" name="exist[<?php echo $configuration->configId ?>][code]" value="<?php echo $configuration->code;?>" class="form-control"></td>
 			<td><input type="text" name="exist[<?php echo $configuration->configId ?>][value]" value="<?php echo $configuration->value;?>" class="form-control"></td>
-			<td><input type="submit" name="removeOption" onclick="removeRow(this)" value="Remove" class="btn btn-danger"></td>
+			<td><button type="button" name="removeOption" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('delete','admin_configurationGroup_configuration',['configId'=>$configuration->configId]);?>').resetParam().setParams($('#editForm').serializeArray()).load();" value="Remove" class="btn btn-danger">Remove</button></td>
 		</tr>
 		<?php endforeach;?>
 	<?php endif; ?>
 	</tbody>
 	<tfoot>
-		<td><button type="button" class="btn btn-success" id="addNewRow">Add</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('save','admin_configurationGroup_configuration');?>').resetParam().setParams($('#editForm').serializeArray()).load();">Update</button></td>
+		<td><button type="button" class="btn btn-success" id="addNewRow" onclick="//addRow()">Add</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('save','admin_configurationGroup_configuration');?>').resetParam().setParams($('#editForm').serializeArray()).load();">Update</button></td>
 		<td></td><td></td>
 	</tfoot>
 
 </table>
+<!-- <div style="display: none;">
+	<table id="newTable">
+		<tbody>
+			<tr> <td><input type="text" name="new[title][]" class="form-control"></td> <td><input type="text" name="new[code][]" class="form-control"></td> <td><input type="text" name="new[value][]" class="form-control"></td> <td><input type="button" name="removeOption" value="Remove" class="btn btn-danger" onclick="removeRow(this)"></td></tr>
+		</tbody>
+	</table>
+</div> -->
 </form>
 
 <script type="text/javascript">
 	function removeRow(button) {
 		 $(button).closest('tr').remove();
+		 
 	}
 
+	/*function addRow() {
+		var newTable = document.getElementById('newTable');
+		var existingTable = document.getElementById('existingTable').children[0];
+		existingTable.append(newTable.children[0].children[0].cloneNode(true));
+	}
+*/
+	
 	$('#addNewRow').click(function () {
 			$('#existingTable').append('<tr> <td><input type="text" name="new[title][]" class="form-control"></td> <td><input type="text" name="new[code][]" class="form-control"></td> <td><input type="text" name="new[value][]" class="form-control"></td> <td><input type="button" name="removeOption" value="Remove" class="btn btn-danger" onclick="removeRow(this)"></td></tr>');
 	});

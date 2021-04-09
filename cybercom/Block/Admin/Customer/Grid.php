@@ -11,7 +11,7 @@ class Grid extends \Block\Core\Grid
 	protected $pages = null;
 	protected $filter = null;
 	
-	public function prepareCollection($customers = null) {
+	public function prepareCollection() {
 
 			$customers = \Mage::getModel('Model\Customer');
 			
@@ -120,7 +120,7 @@ class Grid extends \Block\Core\Grid
 		return $this;
 	}
 
-	public function prepareButton()
+	public function prepareButtons()
 	{
 		$this->addButton('addNew',[
 			'label' => 'Add Customer',

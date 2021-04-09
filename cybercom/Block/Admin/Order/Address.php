@@ -13,10 +13,8 @@ class Address extends \Block\Core\Template
 
 	public function getOrderShippingAddress()
 	{
-		$order = \Mage::getModel('Model\Order');
-		$session = \Mage::getModel('Model\Admin\Session');
-		$orderId = $session->orderId;	
-		$order = $order->load($orderId);
+		$orderId = $this->getRequest()->getGet('orderId');;	
+		$order = \Mage::getModel('Model\Order')->load($orderId);
 		if ($order) {
 			$shippingAddress = $order->getShippingAddress();
 			if ($shippingAddress) {
@@ -27,10 +25,8 @@ class Address extends \Block\Core\Template
 
 	public function getOrderBillingAddress()
 	{
-		$order = \Mage::getModel('Model\Order');
-		$session = \Mage::getModel('Model\Admin\Session');
-		$orderId = $session->orderId;	
-		$order = $order->load($orderId);
+		$orderId = $this->getRequest()->getGet('orderId');;	
+		$order = \Mage::getModel('Model\Order')->load($orderId);
 		if ($order) {
 			$billingAddress = $order->getBillingAddress();
 			if ($billingAddress) {

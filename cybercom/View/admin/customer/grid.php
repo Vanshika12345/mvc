@@ -6,7 +6,7 @@ $customers = $this->getCustomers();
 		<section>
 		   <div class="container">
         		<h4 class="text-muted text-weight-bold">Customers</h4>
-				<hr><a onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('edit','admin_customer',null,true);?>').resetParam().load();"class="btn btn-success" >Add Customer</a>
+				<hr><a onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('edit','admin_customer',null,true);?>').resetParam().load();" class="btn btn-success" >Add Customer</a>
 			<br>
 			<table class="table">
 				<thead>

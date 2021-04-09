@@ -153,9 +153,12 @@ class Category extends \Controller\Core\Admin{
 			$edit = \Mage::getBlock('Block\Admin\Category\Edit');
 			$category = $this->getCategoryModel();
 			$id = $this->getRequest()->getGet('categoryId');
-			if($id) {
-				
+			if(!$id) {
+				$edit = \Mage::getBlock('Block\Admin\Category\Edit\Tabs\Form');
+			}	
+			else{
 				$category = $category->load($id);
+				$edit = \Mage::getBlock('Block\Admin\Category\Edit');
 				if (!$category) {
 					throw new Exception("No records found");	
 				}

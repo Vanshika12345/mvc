@@ -13,7 +13,7 @@
     
     <tr>
         <td height="500px" width="150px"><?php echo $this->getLeft()->toHtml();?></td>
-        <td>
+        <td width="300px">
             <?php $message = $this->createBlock('Block\Core\Layout\Message');
                 echo $message->toHtml();?>
             <?php echo $this->getContent()->toHtml(); ?>

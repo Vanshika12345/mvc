@@ -56,6 +56,41 @@ class Configuration extends \Controller\Core\Admin
 		echo json_encode($response);
 	}
 
+	public function deleteAction()
+	{
+		$id = $this->getRequest()->getGet('configId');
+		if(!$id){
+			$this->getMessage()->setFailure('Id Not Found');
+		}
+		$configModel = \Mage::getModel('Model\ConfigurationGroup\Configuration')->load($id); 
+		if(!$configModel->delete()){
+			$this->getMessage()->setFailure('Id Invalid');
+		}
+
+		$configurationGroup = \Mage::getModel('Model\ConfigurationGroup');
+		if($id = $this->getRequest()->getGet('configurationGroupId')){
+			$configurationGroup = $configurationGroup->load($id);
+			if (!$configurationGroup) {
+				throw new \Exception("No Data Found");
+			}
+		}
+		$edit = \Mage::getBlock('Block\Admin\ConfigurationGroup\Edit')->setTableRow($configurationGroup)->toHtml();
+
+		$response = [
+			'status' => 'success',
+			'message' => 'you did it',
+			'element' => [
+				[
+					'selector' => '#moduleGrid',
+					'html' => $edit
+				]
+			]
+		];
+
+		header("Content-type: application/json; charset=utf-8");
+		echo json_encode($response);
+
+	}
 	
 		
 }

@@ -1,10 +1,17 @@
 <form action="" method="POST" id="cartForm">
 	<div class="container">
-		<div class="row mt-4">
+		<?php /*if(!(\Mage::getModel('Model\Admin\Session')->cartId)):?>
+			<div class="row mt-4">
 			<div class="col-md-10 offset-md-1">
 				<?php echo $this->getBlock('Block\Admin\Cart\Customer')->toHtml() ?>
 			</div>
 		</div>
+		<?php //else: ?>*/ ?>
+		<div class="row mt-4">
+			<div class="col-md-10 offset-md-1">
+				<?php echo $this->getBlock('Block\Admin\Cart\Customer')->toHtml() ?>
+			</div>
+		</div>	
 		<div class="row mt-4">
 			<div class="col-md-10 offset-md-1" id="cartContent">
 				<?php echo $this->getBlock('Block\Admin\Cart\Cart')->toHtml() ?>
@@ -32,6 +39,7 @@
 			<div class="col col-md-5 border offset-md-1" id="cartDetails">
 				<?php echo $this->getBlock('Block\Admin\Cart\CartDetails')->toHtml() ?>
 			</div>
-		</div> 
+		</div>
+		<?php //endif; ?> 
 	</div>
 </form>

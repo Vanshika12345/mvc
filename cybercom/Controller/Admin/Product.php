@@ -144,19 +144,23 @@ class Product extends \Controller\Core\Admin{
 
 	public function editAction() {
 
-		$edit = \Mage::getBlock('Block\Admin\Product\Edit');
-		$product = $this->getProductModel();		
-			if($id = $this->getRequest()->getGet('productId')){
-				$product = $product->load($id);
+		try{
 
+			$product = $this->getProductModel();
+			$id = $this->getRequest()->getGet('productId');
+			if ($id) {
+				
+				$product = $product->load($id);
 				if (!$product) {
-					throw new \Exception("No Data Found");
+					throw new \Exception("No records found");		
 				}
 				
-				
 			}
-		$edit->setTableRow($product);	
-		$edit = $edit->toHtml();
+		} catch (Exception $e){
+			$this->getMessage()->setFailure($e->getMessage());
+		}
+		$edit = \Mage::getBlock('Block\Admin\Product\Edit')->setTableRow($product)->toHtml();
+
 		$response = [
 			'status' => 'success',
 			'message' => 'product grid',

@@ -33,14 +33,18 @@ class Attribute extends \Controller\Core\Admin
 		{
 			try{
 			$attribute = \Mage::getModel('Model\Attribute');
-			if($id = $this->getRequest()->getGet('attributeId')){
+			$id = $this->getRequest()->getGet('attributeId');
+			if ($id) {
+				
 				$attribute = $attribute->load($id);
-				if (!$attribute) {
-					throw new \Exception("No Data Found");
-				}
-			}
 
-			$edit = \Mage::getBlock('Block\Admin\Attribute\Edit')->setTableRow($attribute)->toHtml();
+				if (!$attribute) {
+					throw new \Exception("No records found");
+					
+				}
+				
+			}
+				$edit = \Mage::getBlock('Block\Admin\Attribute\Edit')->setTableRow($attribute)->toHtml();
 
 			$response = [
 				'status' => 'success',

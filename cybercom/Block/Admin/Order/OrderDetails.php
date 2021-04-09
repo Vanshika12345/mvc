@@ -12,7 +12,8 @@ class OrderDetails extends \Block\Core\Template
 
 	public function getOrder()
 	{
-		return \Mage::getModel('Model\Order')->load(\Mage::getModel('Model\Admin\Session')->orderId);
+		$id = $this->getRequest()->getGet('orderId');
+		return \Mage::getModel('Model\Order')->load($id);
 	}
 }
 
