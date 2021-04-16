@@ -18,7 +18,7 @@
 						<?php endforeach; ?>
 					</select>
 					
-					<button type="button" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('selectCustomer','admin_cartCont');?>').resetParam().setParams($('#cartForm').serializeArray()).setMethod('POST').load()" class="btn btn-primary">Go</button>
+					<button type="button" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('selectCustomer','admin_cart');?>').resetParam().setParams($('#cartForm').serializeArray()).setMethod('POST').load()" class="btn btn-primary">Go</button>
 				
 				</div>
 				
@@ -55,7 +55,7 @@
 						<input type="checkbox" id="billingAddressBook" name="billingAddressBook"> Save In AddressBook
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-primary" onclick="object.setUrl('<?= $this->getUrl()->getUrl('updateAddress','admin_cartCont',['type' => 'billing']) ?>').resetParam().setParams($('#cartForm').serializeArray()).setMethod('POST').load();">Save</button>
+						<button type="button" class="btn btn-primary" onclick="object.setUrl('<?= $this->getUrl()->getUrl('updateAddress','admin_cart',['type' => 'billing']) ?>').resetParam().setParams($('#cartForm').serializeArray()).setMethod('POST').load();">Save</button>
 					</div>
 				<?php endif; ?>
 				</div>		
@@ -83,7 +83,7 @@
 						<input type="checkbox" id="shippingAddressBook" name="shippingAddressBook"> Save In AddressBook
 					</div>
 					<div class="form-group">
-						<button type="button" class="btn btn-primary" onclick="object.setUrl('<?= $this->getUrl()->getUrl('updateAddress','admin_cartCont',['type' => 'shipping']) ?>').resetParam().setParams($('#cartForm').serializeArray()).setMethod('POST').load();">Save</button>
+						<button type="button" class="btn btn-primary" onclick="object.setUrl('<?= $this->getUrl()->getUrl('updateAddress','admin_cart',['type' => 'shipping']) ?>').resetParam().setParams($('#cartForm').serializeArray()).setMethod('POST').load();">Save</button>
 					</div>
 				<?php endif; ?>
 				</div>
@@ -146,7 +146,7 @@
 				 	<td><?php echo $item->quantity * $item->price; ?></td>
 				 	<td><?php echo $item->discount* $item->quantity; ?></td>
 				 	<td><?php echo ($item->quantity * $item->price)- $item->discount;?></td>
-				 	<td><button type="button" class='btn-danger' onclick ="object.setUrl('<?php echo $this->getUrl()->getUrl('delete','admin_cartCont',['itemId'=>$item->cartItemId]); ?>').resetParam().load();"><i class='fas fa-trash-alt'></i></button>
+				 	<td><button type="button" class='btn-danger' onclick ="object.setUrl('<?php echo $this->getUrl()->getUrl('delete','admin_cart',['itemId'=>$item->cartItemId]); ?>').resetParam().load();"><i class='fas fa-trash-alt'></i></button>
 			 		</td>
 			 	</tr>
 				<?php endforeach; ?>
@@ -194,31 +194,10 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('placeOrder','admin_cartCont');?>').resetParam().load();">Place Order</button>
+					<button type="button" class="btn btn-success" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('placeOrder','admin_cart');?>').resetParam().load();">Place Order</button>
 				</td>
 			</tr>
 		</table>
 	</section>
 </div>
 </form>
-<?php //$payment = $this->getCart()->getPaymentMethod()->getData(); ?>
-<?php //$shipping = $this->getCart()->getShippingMethod()->getData(); ?>
-<?php //cartmodel shipping and payemntId //Grid me billing and shipping address?>
-<!-- 		<div class="container mt-5">
-			<div class="form-row">
-				<div class="col">	
-					<h4 class="text-muted text-weight-bold">Payment Method</h4>
-					<div class="form-group">
-						<?php //foreach ($payment as $key => $value): ?>
-						<input type="radio" name="cart[paymentMethodId]" value="<?= $value->paymentMethodId?>" placeholder="Address">&nbsp;&nbsp;<label><?= $value->name; ?></label><br>
-					<?php //endforeach; ?>
-					</div>
-				</div>
-				<div class="col">	
-					<h4 class="text-muted text-weight-bold">Shipping Method</h4>
-					<div class="form-group">
-						<?php //foreach ($shipping as $key => $value): ?>
-						<input type="radio" name="cart[shippingMethodId]" value="<?= $value->shippingMethodId?>" placeholder="Address">&nbsp;&nbsp;<label><?= $value->name; ?></label><br>
-					<?php// endforeach; ?>
-					</div>
-				</div> -->

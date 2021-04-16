@@ -3,7 +3,7 @@ namespace Controller\Admin;
 
 class Cart extends \Controller\Core\Admin
 {
-	
+    
     public function indexAction()
     {
             $gridHtml = \Mage::getBlock('Block\Admin\Cart\Grid');
@@ -24,44 +24,21 @@ class Cart extends \Controller\Core\Admin
             echo json_encode($response);    
     }
 
-	public function addToCartAction()
-	{
-		try{
+    public function addToCartAction()
+    {
+        try{
             
-			$productId = $this->getRequest()->getGet('productId');
+            $productId = $this->getRequest()->getGet('productId');
 
-			$product = \Mage::getModel('Model\Product')->load($productId);
-			if(!$product){
-				$this->getMessage()->setFailure('Invalid Id');
-			}
-
-			$cart = $this->getCart();
-			$cartItem = \Mage::getModel('Model\Cart\Item');
-            $cartId = $cart->cartId;
-            $query = "SELECT * FROM `{$cartItem->getTableName()}` WHERE `productId` = '{$productId}' AND `cartId` = '{$cartId}'";
-            
-            $cartItem = $cartItem->fetchRow($query);
-
-            if (!$cartItem) {
-                $cartItem = \Mage::getModel('Model\Cart\Item');
-                $cartItem->cartId = $cartId;
-                $cartItem->productId = $product->productId;
-                $cartItem->basePrice = $product->price;
-                $cartItem->price = $product->price;
-                $cartItem->quantity = 1;
-                $cartItem->discount = $product->discount;
-                $cartItem->createdAt = date("Y-m-d H:i:s");
-            
-            } else {
-            
-                $cartItem->quantity = $cartItem->quantity + 1;
-                $price = $cartItem->price * $cartItem->quantity;
-                $cartItem->price = $price;
+            $product = \Mage::getModel('Model\Product')->load($productId);
+            if(!$product){
+                $this->getMessage()->setFailure('Invalid Id');
             }
-            
-            $cartItem->save();
+
+            $cart = $this->getCart();
+            $cart->addItemToCart($product,1,true);
             $this->updateCartTotal();
-			$this->getMessage()->setSuccess('Item Successfully add to cart');
+            $this->getMessage()->setSuccess('Item Successfully add to cart');
 
             $gridHtml = \Mage::getBlock('Block\Admin\Cart\Grid');
             $cart = $this->getCart();
@@ -80,37 +57,37 @@ class Cart extends \Controller\Core\Admin
             header("Content-type: application/json; charset=utf-8");
             echo json_encode($response); 
 
-		}catch (Exception $e){
-			$this->getMessage()->setFailure($e->getMessage());
-		}
-	}
+        }catch (\Exception $e){
+            $this->getMessage()->setFailure($e->getMessage());
+        }
+    }
 
    public function getCart($customerId = null)
-	{
-		$session = \Mage::getModel('Model\Admin\Session');
-		
-		if($customerId){
-			$session->customerId = $customerId;
-		}
-
-		$cart = \Mage::getModel('Model\Cart');
-		$query = "SELECT * FROM `{$cart->getTableName()}` WHERE `customerId` = '{$session->customerId}'";
-
-		$cart = $cart->fetchRow($query);
-
-		if($cart){
-			return $cart;
-		}
-        if($session->customerId){
-    		$cart = \Mage::getModel('Model\Cart');
-    		$cart->customerId = $session->customerId;
-    		$cart->createdAt = date('Y-m-d H:i:s');
-    		$cart->save();
-    		return $cart;
+    {
+        $session = \Mage::getModel('Model\Admin\Session');
+        
+        if($customerId){
+            $session->customerId = $customerId;
         }
 
-		return \Mage::getModel('Model\Cart');
-	}
+        $cart = \Mage::getModel('Model\Cart');
+        $query = "SELECT * FROM `{$cart->getTableName()}` WHERE `customerId` = '{$session->customerId}'";
+
+        $cart = $cart->fetchRow($query);
+
+        if($cart){
+            return $cart;
+        }
+        if($session->customerId){
+            $cart = \Mage::getModel('Model\Cart');
+            $cart->customerId = $session->customerId;
+            $cart->createdAt = date('Y-m-d H:i:s');
+            $cart->save();
+            return $cart;
+        }
+
+        return \Mage::getModel('Model\Cart');
+    }
 
 
     public function updateAction(){
